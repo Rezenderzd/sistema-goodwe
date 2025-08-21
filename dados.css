@@ -55,3 +55,40 @@
 #aviso{
     margin-top: 10px;
 }
+
+
+.conteudo-previsoes{
+    margin-top: 100px;
+    margin-left: 50px;
+}
+
+.lista-recomendacao{
+    width: 400px;
+    padding: 30px;
+    --bs-border-opacity: .3;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+
+.item-recomendacao{
+    padding: 20px;
+    margin-left: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.botoes-recomendacao{
+    flex-direction: row;
+}
+
+#sem-recomendacao{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

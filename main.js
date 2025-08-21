@@ -6,6 +6,7 @@ import apiFuncoes from "./apiFuncoes.js"
 const botao = document.querySelector("#botao-cidade")
 
 botao.addEventListener("click", async ()=>{
+        apiFuncoes.limparLista()
         const horas = await conjuntoItensFor("time")
         const temperatura = await conjuntoItensFor("feelslike_c")
         const velocidadeVento = await conjuntoItensFor("wind_kph")
