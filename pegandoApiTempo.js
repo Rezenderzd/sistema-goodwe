@@ -15,22 +15,22 @@ async function conjuntoItensFor(item){
     if(cidade === ""){
         aviso.textContent = 'Digite o nome da cidade'
     }else{
-        document.querySelector("#aviso").textContent = ''
-    }
-    const cidadeURL = encodeURIComponent(cidade)
-    const qtdMaximoDias = 3
-    const qtdHoras = 24
-    let array = []
-    const apiCidade = await pegandoAPi(cidadeURL)
-    for(let i=0;i<qtdMaximoDias;i++){
-        for(let j=0; j<qtdHoras;j++){
-        const string  = `apiCidade.forecast.forecastday[${i}].hour[${j}].${item}`
-        const tempo = eval(string)
-        array.push(tempo)
+        aviso.textContent = ''
+        const cidadeURL = encodeURIComponent(cidade)
+        const qtdMaximoDias = 3
+        const qtdHoras = 24
+        let array = []
+        const apiCidade = await pegandoAPi(cidadeURL)
+        for(let i=0;i<qtdMaximoDias;i++){
+            for(let j=0; j<qtdHoras;j++){
+            const string  = `apiCidade.forecast.forecastday[${i}].hour[${j}].${item}`
+            const tempo = eval(string)
+            array.push(tempo)
+            }
         }
+        console.log(array)
+        return array
     }
-    console.log(array)
-    return array
 }
 
 export default conjuntoItensFor

@@ -1,0 +1,57 @@
+.pagina{
+    background-color: #ebecec;
+}
+
+.navbar{
+    height: 100px;
+}
+
+.navbar-collapse{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.informacoes-navbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.form-control{
+    border: solid 1px #dc3545;
+}
+
+.pesquisa{
+    width: 400px;
+    height: 50px;
+}
+
+.navbar::after{
+    content: "";
+    background-color: #dc3545;
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    top: 100px;
+}
+
+.offcanvas-top{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0px 0px 8px 8px;
+    height: 250px !important;
+}
+
+
+.input-group{
+    margin-top: 30px;
+    border-radius: 5px !important;
+}
+
+#aviso{
+    margin-top: 10px;
+}

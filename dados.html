@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsões climáticas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="dados.css">
+</head>
+<body class="pagina">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="logo-goodwe" href="https://br.goodwe.com/">
+                <img src="./imagens/logo-goodwe.png" alt="Logo Goodwe" width="200" height="100">
+            </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav gap-3">
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Ver Cidade</button>
+              <form class="d-flex pesquisa gap-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Digite o nome da cidade" aria-label="Search"/>
+                <button class="btn btn-outline-danger" type="submit">Pesquisar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasTopLabel">Digite o nome da cidade</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nome cidade" aria-label="Username" aria-describedby="visible-addon" id="nome-cidade">
+                <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+                <button type="button" class="btn btn-outline-danger" id="botao-cidade">Confirmar</button>
+            </div>
+            <p id="aviso"></p>
+        </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="main.js" type="module"></script>
+</body>
+</html>
