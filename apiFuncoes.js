@@ -10,13 +10,14 @@ const apiFuncoes = {
                 lista.innerHTML += `<li class="item-recomendacao  border border-danger">
                 <p>Vai fazer frio do dia ${dia[i]} até ${dia[i+2]} com ${valores[i]} ºC<br>Deseja economizar energia 5 horas antes?</p>
                 <div class="botoes-recomendacao">
-              <button type="button" class="btn btn-danger" id="aceitar-sugestao">Sim</button>
-              <button type="button" class="btn border border-secondary">Não</button>
+              <button type="button" class="btn btn-danger" value="recomendacao">Sim</button>
+              <button type="button" class="btn border border-secondary" value="recomendacao">Não</button>
                 </div>
             </li>`
                 i++
             }
         }
+        return lista
     },
     
     pegarDadosVento(dia, valores){
@@ -28,14 +29,15 @@ const apiFuncoes = {
                 lista.innerHTML += `<li class="item-recomendacao  border border-danger">
             <p>Vai ventar muito do dia ${dia[i]} até ${dia[i+2]} com ${valores[i]} mm/h<br>Deseja economizar energia 5 horas antes?</p>
             <div class="botoes-recomendacao">
-              <button type="button" class="btn btn-danger" id="aceitar-sugestao">Sim</button>
-              <button type="button" class="btn border border-secondary">Não</button>
+              <button type="button" class="btn btn-danger" value="recomendacao">Sim</button>
+              <button type="button" class="btn border border-secondary" value="recomendacao">Não</button>
             </div>
             </li>`
                 
                 i++
             }
         }
+        return aviso
     },
     
     
@@ -48,8 +50,8 @@ const apiFuncoes = {
                 lista.innerHTML += `<li class="item-recomendacao  border border-danger">
                 <p>Vai chiver muito do dia ${dia[i]} até ${dia[i+2]} com ${valores[i]} mm/h<br>Deseja economizar energia 5 horas antes?</p>
                 <div class="botoes-recomendacao">
-              <button type="button" class="btn btn-danger" id="aceitar-sugestao">Sim</button>
-              <button type="button" class="btn border border-secondary">Não</button>
+              <button type="button" class="btn btn-danger" value="recomendacao">Sim</button>
+              <button type="button" class="btn border border-secondary" value="recomendacao">Não</button>
             </div>
             </li>`
                 i++
@@ -66,8 +68,8 @@ const apiFuncoes = {
                 lista.innerHTML += `<li class="item-recomendacao  border border-danger">
                 <p>Tem alta probabilidade de chuva do dia ${dia[i]} até ${dia[i+2]} com ${valores[i]} mm/h<br>Deseja economizar energia 5 horas antes?</p>
                 <div class="botoes-recomendacao">
-              <button type="button" class="btn btn-danger" id="aceitar-sugestao">Sim</button>
-              <button type="button" class="btn border border-secondary">Não</button>
+              <button type="button" class="btn btn-danger" value="recomendacao">Sim</button>
+              <button type="button" class="btn border border-secondary" value="recomendacao">Não</button>
             </div>
             </li>`
                 i++
@@ -84,8 +86,8 @@ const apiFuncoes = {
                 lista.innerHTML += `<li class="item-recomendacao  border border-danger">
                 <p>Vai ficar nublado do dia ${dia[i]} até ${dia[i+2]} com ${valores[i]} mm/h<br>Deseja economizar energia 5 horas antes?</p>
                 <div class="botoes-recomendacao">
-              <button type="button" class="btn btn-danger" id="aceitar-sugestao">Sim</button>
-              <button type="button" class="btn border border-secondary">Não</button>
+              <button type="button" class="btn btn-danger" value="recomendacao">Sim</button>
+              <button type="button" class="btn border border-secondary" value="recomendacao">Não</button>
             </div>
             </li>`
                 i++

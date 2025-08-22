@@ -4,6 +4,22 @@ import apiFuncoes from "./apiFuncoes.js"
 //Pegar o nome da cidade e  transforma-lo em compativel para a url
 
 const botao = document.querySelector("#botao-cidade")
+const listaAtual = document.querySelector("#lista-recomendacao")
+const mensagemAviso = document.querySelector("#sem-recomendacao")
+const verCidade = document.querySelector("#ver-cidade")
+const fecharVerCidade = document.querySelector("#fechar-ver-cidade")
+let nomeCidade;
+
+verCidade.addEventListener("click", ()=>{
+        nomeCidade = document.querySelector("#nome-cidade").value
+        document.querySelector("#nome-cidade").value = ""
+})
+
+fecharVerCidade.addEventListener("click",()=>{
+        document.querySelector("#nome-cidade").value = nomeCidade
+})
+
+
 
 botao.addEventListener("click", async ()=>{
         apiFuncoes.limparLista()
@@ -18,10 +34,48 @@ botao.addEventListener("click", async ()=>{
         apiFuncoes.pegarDadosMilimetrosChuva(horas, milimetros)
         apiFuncoes.pegarDadosChanceChuva(horas, chanceChuva)
         apiFuncoes.pegarDadosNuvem(horas, nuvens)
-        document.querySelector("#nome-cidade").value = ""
         const offcanvasCidade = document.querySelector('#offcanvasTop')
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCidade) || new bootstrap.Offcanvas(offcanvasCidade)
         offcanvas.hide()
+})
+
+document.addEventListener("click", async (evento) => {
+        if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
+                const liAtual = evento.target.closest('li')
+                const horas = await conjuntoItensFor("time")
+                const textoLi = liAtual.textContent
+                const textoDataLi = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/
+                const dataHora = textoLi.match(textoDataLi)
+                let horasAntes;
+                if(dataHora){
+                        const inicioEvento = dataHora[1]
+                        for(let i = 0; i<horas.length; i++){
+                                if(horas[i]===inicioEvento){
+                                        horasAntes = horas[i-5]
+                                        break
+                                }
+                        }
+                }
+                alert(`Alexa: Ok, ativando a economia de energia para: ${horasAntes} `)
+                liAtual.remove()
+                if(!listaAtual.querySelector("li")){
+                       mensagemAviso.textContent = "Não há recomendações no momento"
+                }
+                else{
+                        mensagemAviso.textContent = ''
+                }
+                
+        }
+        else if(evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("border-secondary")){
+                const liAtual = evento.target.closest('li')
+                liAtual.remove()
+                if(!listaAtual.querySelector("li")){
+                        mensagemAviso.textContent = "Não há recomendações no momento"
+                }
+                else{
+                        mensagemAviso.textContent = ''
+                }
+        }
 })
 
 

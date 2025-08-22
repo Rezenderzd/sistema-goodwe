@@ -19,7 +19,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav gap-3">
-            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Ver Cidade</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="ver-cidade">Ver Cidade</button>
               <form class="d-flex pesquisa gap-3" role="search">
                 <input class="form-control me-2" type="search" placeholder="Digite o nome da cidade" aria-label="Search"/>
                 <button class="btn btn-outline-danger" type="submit">Pesquisar</button>
@@ -38,10 +38,10 @@
         </div>
       </main>
 
-        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasTopLabel">Digite o nome da cidade</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="fechar-ver-cidade"></button>
         </div>
         <div class="offcanvas-body">
             <div class="input-group">
