@@ -11,12 +11,12 @@ const fecharVerCidade = document.querySelector("#fechar-ver-cidade")
 let nomeCidade;
 
 verCidade.addEventListener("click", ()=>{
-        nomeCidade = document.querySelector("#nome-cidade").value
-        document.querySelector("#nome-cidade").value = ""
+        nomeCidade = document.querySelector("#nome-cidade").value //armazena o nome que está no #nome-cidade 
+        document.querySelector("#nome-cidade").value = "" 
 })
 
 fecharVerCidade.addEventListener("click",()=>{
-        document.querySelector("#nome-cidade").value = nomeCidade
+        document.querySelector("#nome-cidade").value = nomeCidade //pega o nome da cidade que foi armazenado e adiciona no input para não quebrar os botões
 })
 
 
@@ -41,11 +41,11 @@ botao.addEventListener("click", async ()=>{
 
 document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
-                const liAtual = evento.target.closest('li')
+                const liAtual = evento.target.closest('li') //pega a li mais próxima (a do botão nesse caso)
                 const horas = await conjuntoItensFor("time")
                 const textoLi = liAtual.textContent
-                const textoDataLi = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/
-                const dataHora = textoLi.match(textoDataLi)
+                const textoDataLi = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/ // \d pega numeros {4} que contenham 4 digitos
+                const dataHora = textoLi.match(textoDataLi) //encontra textoDataLi dentro do textoLi
                 let horasAntes;
                 if(dataHora){
                         const inicioEvento = dataHora[1]
@@ -58,7 +58,7 @@ document.addEventListener("click", async (evento) => {
                 }
                 alert(`Alexa: Ok, ativando a economia de energia para: ${horasAntes} `)
                 liAtual.remove()
-                if(!listaAtual.querySelector("li")){
+                if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
                        mensagemAviso.textContent = "Não há recomendações no momento"
                 }
                 else{
