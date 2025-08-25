@@ -1,5 +1,6 @@
 import conjuntoItensFor from "./pegandoApiTempo.js"
 import apiFuncoes from "./apiFuncoes.js"
+import ativandoBotaoGrafico from "./graficos.js"
 
 //Pegar o nome da cidade e  transforma-lo em compativel para a url
 
@@ -9,6 +10,7 @@ const mensagemAviso = document.querySelector("#sem-recomendacao")
 const verCidade = document.querySelector("#ver-cidade")
 const fecharVerCidade = document.querySelector("#fechar-ver-cidade")
 let nomeCidade;
+ativandoBotaoGrafico()
 
 verCidade.addEventListener("click", ()=>{
         nomeCidade = document.querySelector("#nome-cidade").value //armazena o nome que está no #nome-cidade 
@@ -21,7 +23,7 @@ fecharVerCidade.addEventListener("click",()=>{
 
 
 
-botao.addEventListener("click", async ()=>{
+botao.addEventListener("click", async (evento)=>{
         apiFuncoes.limparLista()
         const horas = await conjuntoItensFor("time")
         const temperatura = await conjuntoItensFor("feelslike_c")
