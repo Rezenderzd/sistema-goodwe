@@ -38,11 +38,15 @@
           <p id="sem-recomendacao">Não há recomendações no momento</p>
         </div>
         <div class="botoes-grafico">
-          <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 1</button>
-          <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 2</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-probabilidade-de-chuva">Probabilidade de chuva</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-tempo-nublado">Porcentagem nuvens</button>
           <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 3</button>
           <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 4</button>
           <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 5</button>
+          <div class="graficos">
+            <canvas id="grafico-probabilidade-de-chuva" class="grafico"></canvas>
+            <canvas id="grafico-tempo-nublado" class="grafico"></canvas>
+          </div>
         </div>
       </main>
 
@@ -61,6 +65,8 @@
         </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="main.js" type="module"></script>
+        <script src="graficos.js" type="module"></script>
 </body>
 </html>

@@ -117,3 +117,24 @@
     background-color: #dc3545;
     color: #ebecec;
 }
+
+.graficos{
+    position: absolute;
+    top: 300px;
+    left: 650px;
+    width: 60%;
+}
+
+.grafico{
+    display: none;
+    height: 25% !important;
+    width: 85% !important;
+}
+
+
+@media (max-width:1280px) {
+    .graficos{
+        left:550px;
+        top: 400px;
+    }
+}

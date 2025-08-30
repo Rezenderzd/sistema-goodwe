@@ -17,7 +17,7 @@ async function conjuntoItensFor(item){
     }else{
         aviso.textContent = ''
         const cidadeURL = encodeURIComponent(cidade)
-        const qtdMaximoDias = 3
+        const qtdMaximoDias = 1
         const qtdHoras = 24
         let array = []
         const apiCidade = await pegandoAPi(cidadeURL)
