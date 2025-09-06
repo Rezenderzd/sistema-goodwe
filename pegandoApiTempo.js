@@ -1,7 +1,7 @@
 //Pega a url da api com a cidade determinada pelo usuário
 async function pegandoAPi(nomeCidade) {
     try{
-        const api = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=c4c8e26e03c74508b2b141838251208&q=${nomeCidade}&days=7`)
+        const api = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=c4c8e26e03c74508b2b141838251208&q=${nomeCidade}&days=1`)
         const apiJson = await api.json()
         return apiJson
     }catch(error){
@@ -28,7 +28,6 @@ async function conjuntoItensFor(item){
             array.push(tempo)
             }
         }
-        console.log(array)
         return array
     }
 }

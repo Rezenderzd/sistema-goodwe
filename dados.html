@@ -19,11 +19,8 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav gap-3">
-            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="ver-cidade">Ver Cidade</button>
-              <form class="d-flex pesquisa gap-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Digite o nome da cidade" aria-label="Search"/>
-                <button class="btn btn-outline-danger" type="submit">Pesquisar</button>
-              </form>
+              <button type="button" class="btn btn-outline-danger botoes-nav" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="ver-cidade">Ver Cidade</button>
+              <button class="btn btn-outline-danger botoes-nav" id="ativar-economia">Ativar economia bateria</button>
             </div>
           </div>
         </div>
@@ -40,15 +37,21 @@
         <div class="botoes-grafico">
           <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-probabilidade-de-chuva">Probabilidade de chuva</button>
           <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-tempo-nublado">Porcentagem nuvens</button>
-          <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 3</button>
-          <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 4</button>
-          <button type="button" class="btn btn-outline-danger botao-grafico">Gráfico 5</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-producao">Produção/hora placa BMT-G4/088A</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-raios-solares">Raios solares</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-temperatura">Temperatura</button>
+          <button type="button" class="btn btn-outline-danger botao-grafico" id="btn-soc">Soc Goodwe</button>
           <div class="graficos">
             <canvas id="grafico-probabilidade-de-chuva" class="grafico"></canvas>
             <canvas id="grafico-tempo-nublado" class="grafico"></canvas>
+            <canvas id="grafico-producao" class="grafico"></canvas>
+            <canvas id="grafico-raios-solares" class="grafico"></canvas>
+            <canvas id="grafico-temperatura" class="grafico"></canvas>
+            <canvas id="grafico-soc" class="grafico"></canvas>
           </div>
         </div>
       </main>
+      <p id="explicacao-raios"></p>
 
         <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
         <div class="offcanvas-header">

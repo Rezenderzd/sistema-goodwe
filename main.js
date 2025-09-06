@@ -10,6 +10,7 @@ const listaAtual = document.querySelector("#lista-recomendacao")
 const mensagemAviso = document.querySelector("#sem-recomendacao")
 const verCidade = document.querySelector("#ver-cidade")
 const fecharVerCidade = document.querySelector("#fechar-ver-cidade")
+const botaoEconomia = document.querySelector("#ativar-economia")
 let nomeCidade;
 
 async function comandoGraficos() {
@@ -30,9 +31,13 @@ fecharVerCidade.addEventListener("click",()=>{
 
 
 botao.addEventListener("click", async (evento)=>{
+        const botoesGrafico = document.querySelectorAll(".botao-grafico")
+        botoesGrafico.forEach(botaoGrafico => {
+                botaoGrafico.classList.remove("selecionado")
+        });
         apiFuncoes.limparLista()
         const horas = await conjuntoItensFor("time")
-        const temperatura = await conjuntoItensFor("feelslike_c")
+        const temperatura = await conjuntoItensFor("mintemp_c")
         const velocidadeVento = await conjuntoItensFor("wind_kph")
         const milimetros = await conjuntoItensFor("precip_mm")
         const chanceChuva = await conjuntoItensFor("chance_of_rain")
@@ -46,6 +51,10 @@ botao.addEventListener("click", async (evento)=>{
         const offcanvasCidade = document.querySelector('#offcanvasTop')
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCidade) || new bootstrap.Offcanvas(offcanvasCidade)
         offcanvas.hide()
+})
+
+botaoEconomia.addEventListener("click", ()=>{
+        alert("Alexa: Ok, economia de energia será ativada.")
 })
 
 document.addEventListener("click", async (evento) => {
