@@ -24,7 +24,6 @@
             </div>
           </div>
         </div>
-
       </nav>
       
       <main class="conteudo-previsoes">
@@ -51,22 +50,58 @@
           </div>
         </div>
       </main>
+      <button type="button" class="btn btn-outline-danger botao-ia recomendacao" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasTop" id="recomendacao-ia">Recomendação ia</button>
+      <button type="button" class="btn btn-outline-danger botao-ia pergunta" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasTop" id="btn-campo-ia">Perguntar a IA</button>
       <p id="explicacao-raios"></p>
 
-        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
+      <!--Offcanvas cidade-->
+      <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasTopLabel">Digite o nome da cidade</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="fechar-ver-cidade"></button>
+          <h5 class="offcanvas-title" id="offcanvasTopLabel">Digite o nome da cidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="fechar-ver-cidade"></button>
         </div>
         <div class="offcanvas-body">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nome cidade" aria-label="Username" aria-describedby="visible-addon" id="nome-cidade">
-                <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
-                <button type="button" class="btn btn-outline-danger" id="botao-cidade">Confirmar</button>
-            </div>
-            <p id="aviso"></p>
+          <div class="input-group">
+              <input type="text" class="form-control" placeholder="Nome cidade" aria-label="Username" aria-describedby="visible-addon" id="nome-cidade">
+              <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+              <button type="button" class="btn btn-outline-danger" id="botao-cidade">Confirmar</button>
+          </div>
+          <p id="aviso"></p>
         </div>
+      </div>
+
+      <!--Offcanvas ia-->
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasRightLabel">Agente IA</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div class="offcanvas-body">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Digite a pergunta" aria-label="Username" aria-describedby="visible-addon" id="pergunta-ia">
+            <button type="button" class="btn btn-outline-danger" id="botao-perguntar-ia">Perguntar</button>
+          </div>
+          <div class="spinner-border text-danger" id="loading-pergunta" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div id="lista-resposta-ia">
+          </div>
+        </div>
+      </div>
+
+      <!--Offcanvas ia recomendacao-->
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasRightLabel">Recomendação IA</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body conjunto-recomendacao">
+          <p id="resposta-recomendacao-ia"></p>
+          <div class="spinner-border text-danger" id="loading-recomendacao" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="main.js" type="module"></script>

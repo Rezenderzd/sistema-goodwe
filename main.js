@@ -11,13 +11,22 @@ const mensagemAviso = document.querySelector("#sem-recomendacao")
 const verCidade = document.querySelector("#ver-cidade")
 const fecharVerCidade = document.querySelector("#fechar-ver-cidade")
 const botaoEconomia = document.querySelector("#ativar-economia")
+const botaoCampoIa = document.querySelector("#btn-campo-ia")
+const botaoIaDuvida = document.querySelector("#botao-perguntar-ia")
+const botaoRecomendacaoIa = document.querySelector("#recomendacao-ia")
+const campoRecomendacaoIa = document.querySelector("#resposta-recomendacao-ia")
+const loadingRecomendacao = document.querySelector("#loading-recomendacao")
+const loadingPergunta = document.querySelector("#loading-pergunta")
 let nomeCidade;
+
+botaoCampoIa.addEventListener("click", ()=>{
+        document.querySelector("#pergunta-ia").value = ''
+})
 
 async function comandoGraficos() {
         await gerandoTodosGraficos()
         ativandoBotaoGrafico()
 }
-
 
 verCidade.addEventListener("click", ()=>{
         nomeCidade = document.querySelector("#nome-cidade").value //armazena o nome que está no #nome-cidade 
@@ -27,8 +36,6 @@ verCidade.addEventListener("click", ()=>{
 fecharVerCidade.addEventListener("click",()=>{
         document.querySelector("#nome-cidade").value = nomeCidade //pega o nome da cidade que foi armazenado e adiciona no input para não quebrar os botões
 })
-
-
 
 botao.addEventListener("click", async (evento)=>{
         const botoesGrafico = document.querySelectorAll(".botao-grafico")
@@ -59,7 +66,6 @@ botaoEconomia.addEventListener("click", ()=>{
 
 document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
-                const liAtual = evento.target.closest('li') //pega a li mais próxima (a do botão nesse caso)
                 alert(`Alexa: Ok, economia de energia será ativada.`)
                 apiFuncoes.limparLista()
                 if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
@@ -82,5 +88,57 @@ document.addEventListener("click", async (evento) => {
         }
 })
 
+botaoIaDuvida.addEventListener("click", async()=>{
+        const campoIa = document.querySelector("#lista-resposta-ia")
+        try{
+                loadingPergunta.style.display = 'block'
+                campoIa.innerHTML=''
+                const pergunta = document.querySelector('#pergunta-ia').value
+                const resposta = await fetch('http://127.0.0.1:5001/iaDuvidas', { //envia uma requisição post para o back com a pergunta do usuário
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                        body: JSON.stringify({pergunta}) //transforma a pergunta em um JSON
+                });
+                const dados = await resposta.json()
+                document.querySelector("#pergunta-ia").value = ''
+                const respostaIa = document.createElement('p')
+                respostaIa.classList.add('resposta-ia')
+                loadingPergunta.style.display='none'
+                respostaIa.textContent = ''
+                respostaIa.textContent = dados.resposta
+                campoIa.appendChild(respostaIa)
+        }
+        catch(error){
+                loadingPergunta.style.display='none'
+                const respostaIa = document.createElement('p')
+                respostaIa.classList.add('resposta-ia')
+                loadingPergunta.style.display='none'
+                respostaIa.textContent = ''
+                respostaIa.textContent='Não foi possível carregar a resposta'
+                campoIa.appendChild(respostaIa)
+                alert(`Erro ao carregar a ia: ${error}`)
+        }
+})
 
-
+botaoRecomendacaoIa.addEventListener("click", async ()=>{
+        try{
+                nomeCidade = document.querySelector("#nome-cidade").value
+                loadingRecomendacao.style.display ='block'
+                campoRecomendacaoIa.textContent=''
+                campoRecomendacaoIa.textContent='Carregando...'
+                const resposta = await  fetch ("http://127.0.0.1:5000/iaRecomendacao",{
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                        body: JSON.stringify({cidade: nomeCidade}) //transforma a pergunta em um JSON
+                })
+                campoRecomendacaoIa.textContent='Analisando dados'
+                const respostaIa = await resposta.json()
+                loadingRecomendacao.style.display = 'none'
+                campoRecomendacaoIa.textContent=''
+                campoRecomendacaoIa.textContent = respostaIa.resposta
+        }catch(error){
+                loadingRecomendacao.style.display = 'none'
+                campoRecomendacaoIa.textContent='Não foi possível carregar a resposta'
+                alert(`Erro ao gerar recomendacao: ${error}`)
+        }
+})
