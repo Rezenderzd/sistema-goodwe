@@ -33,7 +33,7 @@ def ia_recomendacao():
     import requests
     dados_clima = requests.get(url_weather).json()
 
-    prompt_usuario = f"Na minha cidade {nome_cidade}, diga se através desses dados {dados_clima} é necessário economizar energia para uma possível queda e por que"
+    prompt_usuario = f"Na minha cidade {nome_cidade}, diga se através desses dados {dados_clima} é necessário economizar energia para uma possível queda e por que. Caso não seja necessário, diga que não há necessidade de economizar."
 
     resposta = llm.generate_content(prompt_usuario)
     return jsonify({"resposta": resposta.text})
