@@ -5,6 +5,7 @@ let graficoPorcentagemNuvemExistencia = null
 let graficoTemperaturaExistencia=null
 let graficoProducaoExistencia=null
 let graficoUvExistencia = null
+let graficoSocExistencia = null
 
 async function gerandoTodosGraficos(){
   const horas = await conjuntoItensFor("time")
@@ -24,6 +25,9 @@ async function gerandoTodosGraficos(){
 
   await gerandoGraficoTemperatura(horas)
   document.querySelector("#grafico-temperatura").style.display='none'
+
+  await gerandoGraficoSoc(horas)
+  document.querySelector("#grafico-soc").style.display='none'
 }
 
 
@@ -168,6 +172,42 @@ async function gerandoGraficoTemperatura(horarios) {
         data: temperatura,
         borderWidth: 1,
         backgroundColor: '#e9b739'
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  })
+}
+
+
+async function gerandoGraficoSoc(horarios) {
+  let dados = []
+  try{
+    let pegandoDadosSems = await fetch("http://127.0.0.1:5002/dados")
+    let json = await pegandoDadosSems.json()
+    dados = json.informacaoSoc
+  }catch(error){
+    alert(`Falha ao pegar os dados do SEMS ${error}`)
+  }
+  console.log(dados)
+  let graficoSoc = document.querySelector("#grafico-soc").getContext("2d")
+  if (graficoSocExistencia){
+    graficoSocExistencia.destroy()
+  }
+  graficoSocExistencia = new Chart(graficoSoc, {
+    type: 'bar',
+    data: {
+      labels: horarios,
+      datasets: [{
+        label: 'Informações soc (dados retirados do SEMS)',
+        data: dados,
+        borderWidth: 1,
+        backgroundColor: '#392620'
       }]
     },
     options: {

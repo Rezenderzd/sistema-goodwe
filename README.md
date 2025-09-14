@@ -1,1 +1,1 @@
-Para ativar a ia, precisa colocar no terminal python pergunta-ia.py e python recomendacao-ia.py em diferentes terminais
+Para ativar a ia, precisa colocar no terminal python pergunta-ia.py, python recomendacao-ia.py e dados-sems.py em diferentes terminais
