@@ -32,4 +32,4 @@ def ia_duvidas():
     return jsonify({"resposta": texto_resposta}) #retorna a resposta em formato json
 
 if __name__ == "__main__":
-    app.run(debug=True,port=5001) #inicia o servidor flask em modo debug na porta 5000
+    app.run(debug=True,port=5001) #inicia o servidor flask em modo debug na porta 5001

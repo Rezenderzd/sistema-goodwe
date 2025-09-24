@@ -60,7 +60,7 @@
 
 .conteudo-previsoes{
     display: flex;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 50px;
 }
 
@@ -133,20 +133,20 @@
     width: 85% !important;
 }
 
-#explicacao-raios{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 800px;
-    margin-left: 800px;
-}
 
-.botao-ia{
+.botao-ia, .botao-informacao{
     padding: 15px;
     font-size: 20px;
 }
 
+
+.inversor{
+    position: absolute;
+    margin-left: 47%;
+    margin-top: 50px;
+    font-style: italic;
+    bottom: 30px;
+}
 
 #offcanvasRight{
     width: 600px;
@@ -186,5 +186,8 @@
     .graficos{
         left:550px;
         top: 400px;
+    }
+    .inversor{
+        bottom: 0;
     }
 }

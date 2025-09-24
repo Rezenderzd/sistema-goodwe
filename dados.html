@@ -21,6 +21,7 @@
             <div class="navbar-nav gap-3">
               <button type="button" class="btn btn-outline-danger botoes-nav" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="ver-cidade">Ver Cidade</button>
               <button class="btn btn-outline-danger botoes-nav" id="ativar-economia">Ativar economia bateria</button>
+              <button class="btn btn-outline-danger botoes-nav" id="desativar-economia">Desativar economia bateria</button>
             </div>
           </div>
         </div>
@@ -51,8 +52,8 @@
         </div>
       </main>
       <button type="button" class="btn btn-outline-danger botao-ia recomendacao" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasTop" id="recomendacao-ia">Recomendação ia</button>
+      <!--<button type="button" class="btn btn-outline-primary botao-informacao inversor" id="btn-info-inv">Informações do dispositivo<br>Ewelink</button>-->
       <button type="button" class="btn btn-outline-danger botao-ia pergunta" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasTop" id="btn-campo-ia">Perguntar a IA</button>
-      <p id="explicacao-raios"></p>
 
       <!--Offcanvas cidade-->
       <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
@@ -104,6 +105,7 @@
       </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
         <script src="main.js" type="module"></script>
         <script src="graficos.js" type="module"></script>
 </body>
