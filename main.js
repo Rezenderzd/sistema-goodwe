@@ -19,16 +19,8 @@ const loadingRecomendacao = document.querySelector("#loading-recomendacao")
 const loadingPergunta = document.querySelector("#loading-pergunta")
 let nomeCidade;
 const botaoDesativar = document.querySelector("#desativar-economia")
-const options = {
-        username: "Fernando",
-        password: "Rataiada123!",
-        protocolVersion: 4,
-        clean: true
-}
-const client = mqtt.connect("wss://3479f3b41e53469cb8cadbd82b8aee14.s1.eu.hivemq.cloud:8884/mqtt", options)
-client.on("connect", () => {
-        console.log("Conectado ao broker HiveMQ!");
-});
+let ipTasmota
+let linkIpTasmota  = `http://${ipTasmota}`
 
 
 botaoCampoIa.addEventListener("click", ()=>{
@@ -73,31 +65,46 @@ botao.addEventListener("click", async (evento)=>{
 })
 
 botaoEconomia.addEventListener("click", async()=>{
+        try{
+                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                .then(response=> response.json())
+                .then(data=>console.log(data))
+        }catch(error){
+                alert(`Deu merda${error}`)
+        }
         alert("Alexa: Ok, economia de energia será ativada.")
-        client.publish("cmnd/sonoff/POWER", "ON")
         console.log('ligado')
 })
 
 botaoDesativar.addEventListener("click", async()=>{
+        try{
+                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                .then(response=> response.json())
+                .then(data=>console.log(data))        
+        }catch(error){
+                alert(`Deu merda${error}`)
+        }
         alert("Alexa: Ok, modo econômia desativado")
-        client.publish("cmnd/sonoff/POWER", "OFF")
-        console.log('desligado')      
+        console.log('desligado')     
 })
 
 document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
-                alert(`Alexa: Ok, economia de energia será ativada.`)
-                const res = await fetch(`http://${SONOFF_IP}/cm?cmnd=Power%20On`);
-                const data = await res.json();
-                console.log(data)
-                apiFuncoes.limparLista()
-                if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
-                       mensagemAviso.textContent = "Não há recomendações no momento"
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))
+                        apiFuncoes.limparLista()
+                        if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
+                               mensagemAviso.textContent = "Não há recomendações no momento"
+                        }
+                        else{
+                                mensagemAviso.textContent = ''
+                        }
+                }catch(error){
+                        alert(`Deu merda ${error}`)
                 }
-                else{
-                        mensagemAviso.textContent = ''
-                }
-                
+                alert("Alexa: Ok, modo econômia ativado")
         }
         else if(evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("border-secondary")){
                 const liAtual = evento.target.closest('li')

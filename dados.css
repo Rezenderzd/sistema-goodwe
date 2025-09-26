@@ -191,3 +191,21 @@
         bottom: 0;
     }
 }
+@media (max-width:1400px) {
+    .conteudo-previsoes{
+        margin-left: 10px;
+    }
+    #lista-recomendacao{
+        margin-left: -50;
+    }
+    .botoes-grafico{
+        gap: 15px;
+        margin-left: 30px;
+    }
+    .botao-grafico{
+        padding: 7px;
+    }
+    .recomendacao, .pergunta{
+        margin-top: 20px;
+    }
+}
