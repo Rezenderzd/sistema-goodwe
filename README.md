@@ -34,7 +34,7 @@ Abaixo deixei a forma que utilizamos de organização dos processos
 ## Circuito
 Utilizamos um esp8266 para fazer a implementação do tasmota como representado na imagem
 
-![Dashboard](imagens\circuitoo.png)
+![Dashboard](imagens/circuitoo.png)
 
 ##  Grupo 
 1CCPH \
