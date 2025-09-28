@@ -12,7 +12,8 @@ CORS(app)  # habilita CORS para o frontend (habilitando a requisição do front 
 # Configuração da API Gemini
 CHAVE_API_KEY = os.getenv("API_GEMINI_KEY")
 genai.configure(api_key=CHAVE_API_KEY)
-MODELO_ESCOLHIDO = "gemini-1.5-flash"
+MODELO_ESCOLHIDO = "gemini-2.5-flash"
+
 
 prompt_sistema = "Você é uma assistente que responde dúvidas referentes a condições climáticas. Caso a pergunta não se enquadre, responda 'Não tenho conhecimento sobre esse assunto'"
 

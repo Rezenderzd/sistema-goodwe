@@ -19,7 +19,7 @@ const loadingRecomendacao = document.querySelector("#loading-recomendacao")
 const loadingPergunta = document.querySelector("#loading-pergunta")
 let nomeCidade;
 const botaoDesativar = document.querySelector("#desativar-economia")
-let ipTasmota
+let ipTasmota = '192.168.15.53'
 let linkIpTasmota  = `http://${ipTasmota}`
 
 
@@ -66,7 +66,7 @@ botao.addEventListener("click", async (evento)=>{
 
 botaoEconomia.addEventListener("click", async()=>{
         try{
-                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
                 .then(response=> response.json())
                 .then(data=>console.log(data))
         }catch(error){
@@ -78,7 +78,7 @@ botaoEconomia.addEventListener("click", async()=>{
 
 botaoDesativar.addEventListener("click", async()=>{
         try{
-                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
                 .then(response=> response.json())
                 .then(data=>console.log(data))        
         }catch(error){
@@ -91,7 +91,7 @@ botaoDesativar.addEventListener("click", async()=>{
 document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
                 try{
-                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
                         .then(response=> response.json())
                         .then(data=>console.log(data))
                         apiFuncoes.limparLista()
