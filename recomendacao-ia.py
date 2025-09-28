@@ -12,7 +12,7 @@ CORS(app)  # habilita CORS para o frontend (habilitando a requisição do front 
 # Configuração da API Gemini
 CHAVE_API_KEY = os.getenv("API_GEMINI_KEY")
 genai.configure(api_key=CHAVE_API_KEY)
-MODELO_ESCOLHIDO = "gemini-1.5-flash"
+MODELO_ESCOLHIDO = "gemini-2.5-flash"
 
 prompt_sistema = "Você será uma analista de clima e determinará  para o usuário através dos dados recebidos se é recomendado a economia de energia e o por que. Seria necessário economizar energia se há situações que possam ocasionar quedas de energia na residência. Leve em consideração itens da api que possam influenciar nessa situação, como raios uv, fortes chuvas entre outros.Caso não haja o parâmetro cidade, diga que não é possível saber devido a falta da cidade a ser analisada. Não utilize os termos em inglês presentes na API na resposta, apenas escreva em português e não utilize palavras em negrito"
 
