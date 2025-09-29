@@ -1,10 +1,10 @@
 # Projeto Goodwe 
-Neste repositorio esta o codigo fonte de todas as funcionalidade que colocamos em nosso site 
+Neste repositório está o codigo fonte de todas as funcionalidade que colocamos em nosso site 
 ![Dashboard](./imagens/logo-goodwe.png)
 
 ## Como utilizar
-Baixe o requirements.txt (recomendo q use um ambeinte virtual)\
-Crie um arquivo chamado .env para adicionar sua chave do gemini studio neste formato:
+Baixe o requirements.txt (recomendado q use um ambeinte virtual)\
+Crie um arquivo chamado ".env" para adicionar sua chave do gemini studio neste formato:
 ```
 API_GEMINI_KEY='sua chave'
 ```
