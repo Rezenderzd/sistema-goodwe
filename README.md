@@ -20,6 +20,7 @@ python dados-sems.py
 
 ## Diagrama de Arquitetura 
 ![Dashboard](./imagens/diagrama.png)
+
 Nesta imagem desmontra a estruturação que utilizamos para o funciomanento do projeto <br><br>
 
 Abaixo deixei a forma que utilizamos de organização dos processos 

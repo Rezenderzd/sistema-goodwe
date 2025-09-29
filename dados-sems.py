@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Lê o Excel usando a terceira linha como cabeçalho (index 2)
-df = pd.read_excel(".\\DadosSems.xls", header=2)
+df = pd.read_excel(".\\dados-sems.xls", header=2)
 
 # Remove espaços extras dos nomes das colunas
 df.columns = df.columns.str.strip()
