@@ -52,7 +52,7 @@
         </div>
       </main>
       <button type="button" class="btn btn-outline-danger botao-ia recomendacao" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasTop" id="recomendacao-ia">Recomendação ia</button>
-      <!--<button type="button" class="btn btn-outline-primary botao-informacao inversor" id="btn-info-inv">Informações do dispositivo<br>Ewelink</button>-->
+      <button type="button" class="btn btn-outline-danger botao-informacao propriedades" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" id="btn-info-inv">Prioridades do dispositivo</button>
       <button type="button" class="btn btn-outline-danger botao-ia pergunta" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasTop" id="btn-campo-ia">Perguntar a IA</button>
 
       <!--Offcanvas cidade-->
@@ -103,6 +103,26 @@
           </div>
         </div>
       </div>
+
+
+      <!--Offcanvas prioridades-->
+      <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasTopLabel" data-bs-backdrop="static" >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasTopLabel">Digite o nome do item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="fechar-ver-cidade"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="input-group">
+              <input type="text" class="form-control" placeholder="Nome item" aria-label="Username" aria-describedby="visible-addon" id="nome-item">
+              <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+              <input type="text" class="form-control" placeholder="Prioridade" aria-label="Username" aria-describedby="visible-addon" id="prioridade-item">
+              <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+              <button type="button" class="btn btn-outline-danger" id="botao-item">Confirmar</button>
+          </div>
+          <p id="aviso">Nenhum item conectado</p>
+        </div>
+      </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="main.js" type="module"></script>

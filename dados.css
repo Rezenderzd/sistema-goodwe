@@ -140,7 +140,7 @@
 }
 
 
-.inversor{
+.propriedades{
     position: absolute;
     margin-left: 47%;
     margin-top: 50px;
@@ -179,6 +179,12 @@
     margin-top: 30px;
     gap: 200px;
     flex-direction: row;
+}
+
+.offcanvas-bottom{
+    top: 0;
+    height: 100dvh !important;
+    transition: 1s !important;
 }
 
 

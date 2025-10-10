@@ -17,9 +17,10 @@ const botaoRecomendacaoIa = document.querySelector("#recomendacao-ia")
 const campoRecomendacaoIa = document.querySelector("#resposta-recomendacao-ia")
 const loadingRecomendacao = document.querySelector("#loading-recomendacao")
 const loadingPergunta = document.querySelector("#loading-pergunta")
+const telaPrioridade = document.querySelector("#prioridades")
 let nomeCidade;
 const botaoDesativar = document.querySelector("#desativar-economia")
-let ipTasmota
+let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
 
 
@@ -62,6 +63,25 @@ botao.addEventListener("click", async (evento)=>{
         const offcanvasCidade = document.querySelector('#offcanvasTop')
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCidade) || new bootstrap.Offcanvas(offcanvasCidade)
         offcanvas.hide()
+
+        try {
+                const response = await fetch('/api/users', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({nomeCidade})
+                });
+      
+                if (response.ok) {
+                  const data = await response.json();
+                  alert('Usuário criado: ' + data.id);
+                } else {
+                  const error = await response.text();
+                  alert('Erro: ' + error);
+                }
+              } catch (error) {
+                console.error(error);
+                alert('Erro de rede');
+        }
 })
 
 botaoEconomia.addEventListener("click", async()=>{
@@ -172,3 +192,5 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
                 alert(`Erro ao gerar recomendacao: ${error}`)
         }
 })
+
+
