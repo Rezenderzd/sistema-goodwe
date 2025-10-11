@@ -29,7 +29,7 @@ const botaoSenhaVisivelCriar = document.querySelector("#senha-criar-conta-visive
 const botaoSenhaInvisivelCriar = document.querySelector("#senha-criar-conta-invisivel")
 const botaoCriarConta = document.querySelector("#botao-criar-conta")
 const botaoLogar = document.querySelector("#botao-logar")
-let logado = 0
+let logado = false
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
@@ -75,24 +75,6 @@ botao.addEventListener("click", async (evento)=>{
         const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCidade) || new bootstrap.Offcanvas(offcanvasCidade)
         offcanvas.hide()
 
-        try {
-                const response = await fetch('/api/users', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({nomeCidade})
-                });
-      
-                if (response.ok) {
-                  const data = await response.json();
-                  alert('Usuário criado: ' + data.id);
-                } else {
-                  const error = await response.text();
-                  alert('Erro: ' + error);
-                }
-              } catch (error) {
-                console.error(error);
-                alert('Erro de rede');
-        }
 })
 
 botaoEconomia.addEventListener("click", async()=>{
@@ -151,7 +133,8 @@ document.addEventListener("click", async (evento) => {
 
 botaoIaDuvida.addEventListener("click", async()=>{
         const campoIa = document.querySelector("#lista-resposta-ia")
-        try{
+        if(logado){
+                try{
                 loadingPergunta.style.display = 'block'
                 campoIa.innerHTML=''
                 const pergunta = document.querySelector('#pergunta-ia').value
@@ -179,28 +162,35 @@ botaoIaDuvida.addEventListener("click", async()=>{
                 campoIa.appendChild(respostaIa)
                 alert(`Erro ao carregar a ia: ${error}`)
         }
+        }else{
+                alert("Entre com sua conta para acessar a ia")
+        }
 })
 
 botaoRecomendacaoIa.addEventListener("click", async ()=>{
-        try{
-                nomeCidade = document.querySelector("#nome-cidade").value
-                loadingRecomendacao.style.display ='block'
-                campoRecomendacaoIa.textContent=''
-                campoRecomendacaoIa.textContent='Carregando...'
-                const resposta = await  fetch ("http://127.0.0.1:5000/iaRecomendacao",{
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
-                        body: JSON.stringify({cidade: nomeCidade}) //transforma a pergunta em um JSON
-                })
-                campoRecomendacaoIa.textContent='Analisando dados'
-                const respostaIa = await resposta.json()
-                loadingRecomendacao.style.display = 'none'
-                campoRecomendacaoIa.textContent=''
-                campoRecomendacaoIa.textContent = respostaIa.resposta
-        }catch(error){
-                loadingRecomendacao.style.display = 'none'
-                campoRecomendacaoIa.textContent='Não foi possível carregar a resposta'
-                alert(`Erro ao gerar recomendacao: ${error}`)
+        if(logado){
+                try{
+                        nomeCidade = document.querySelector("#nome-cidade").value
+                        loadingRecomendacao.style.display ='block'
+                        campoRecomendacaoIa.textContent=''
+                        campoRecomendacaoIa.textContent='Carregando...'
+                        const resposta = await  fetch ("http://127.0.0.1:5000/iaRecomendacao",{
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                                body: JSON.stringify({cidade: nomeCidade}) //transforma a pergunta em um JSON
+                        })
+                        campoRecomendacaoIa.textContent='Analisando dados'
+                        const respostaIa = await resposta.json()
+                        loadingRecomendacao.style.display = 'none'
+                        campoRecomendacaoIa.textContent=''
+                        campoRecomendacaoIa.textContent = respostaIa.resposta
+                }catch(error){
+                        loadingRecomendacao.style.display = 'none'
+                        campoRecomendacaoIa.textContent='Não foi possível carregar a resposta'
+                        alert(`Erro ao gerar recomendacao: ${error}`)
+                }
+        }else{
+                alert("Entre com sua conta para acessar a ia")
         }
 })
 
@@ -231,10 +221,23 @@ botaoSenhaInvisivelCriar.addEventListener("click",()=>{
         funcoesLogin.senhaInvisivelCriar()
 })
 
-botaoCriarConta.addEventListener("click",()=>{
-        funcoesLogin.validacaoCriarConta(logado)
+botaoCriarConta.addEventListener("click",async ()=>{
+        funcoesLogin.validacaoCriarConta()
+        const email = document.querySelector("#email-criar-conta").value
+        const senha = document.querySelector("#senha-criar-conta").value
+        try {
+                const response = await fetch('http://127.0.0.1:5003/users', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({email,senha})
+                });
+                alert("Criado com sucesso")
+              } catch (error) {
+                console.error(error);
+                alert(`${error}`);
+              }
 })
 
-botaoLogar.addEventListener("click",()=>{
-        funcoesLogin.confirmarLogin()
+botaoLogar.addEventListener("click",async ()=>{
+        logado = funcoesLogin.confirmarLogin()
 })

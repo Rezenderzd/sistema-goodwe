@@ -1,16 +1,16 @@
 import pyodbc
 from flask import Flask, request, jsonify
-import psycopg2
-from psycopg2 import pool
+from flask_cors import CORS #importa o cors para permitir requisicão de outros dominios
 
 app = Flask(__name__)
+CORS(app)
 
 conn = pyodbc.connect(
     'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=26.38.146.86,1433;'  # IP + porta
+    'SERVER=26.110.27.94\\SQLEXPRESS,1433;'  # IP + porta
     'DATABASE=Goodwe;'
-    'UID=Raphael;'
-    'PWD=Flamengo123!;'
+    'UID=Rezende;'
+    'PWD=Guigui2007;'
     'TrustServerCertificate=yes;'
 )
 
@@ -23,7 +23,8 @@ def criar_tabela():
     IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' AND xtype='U')
     CREATE TABLE users (
         id INT IDENTITY(1,1) PRIMARY KEY,
-        cidade VARCHAR(100) NOT NULL,
+        email NVARCHAR(100) UNIQUE NOT NULL,
+        senha VARCHAR(100) NOT NULL,
         created_at DATETIME DEFAULT GETDATE()
     )
     """)
@@ -31,26 +32,28 @@ def criar_tabela():
     print("✅ Tabela 'users' pronta.")
 
 
-@app.route('/api/users', methods=['POST'])
+@app.route('/users', methods=['POST'])
 def register():
     data = request.get_json()
-    cidade = data.get('nomeCidade')
+    email = data.get('email')
+    senha = data.get('senha')
 
-    cursor.execute("SELECT id FROM users WHERE cidade = ?", (cidade,))
+    cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
     if cursor.fetchone():
-        return jsonify({'error': 'Cidade já cadastrada'}), 409
+        return jsonify({'error': 'Email já cadastrada'}), 409
 
     cursor.execute(
-        "INSERT INTO users (cidade) VALUES (?)",
-        (cidade,)
+        "INSERT INTO users (email, senha) VALUES (?, ?)",
+        (email, senha)
     )
     conn.commit()
+    cursor.execute("SELECT @@IDENTITY AS id")
+    user_id = cursor.fetchone()[0]
 
-    return jsonify({'message': 'Cidade cadastrada com sucesso!'}), 201
+    return jsonify({'id': user_id, 'message': 'Email cadastrada com sucesso!'}), 201
+
 
 
 if __name__ == '__main__':
     criar_tabela()
-    app.run(debug=True, port=3000)
-
-
+    app.run(debug=True, port=5003)

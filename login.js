@@ -57,7 +57,7 @@ const funcoesLogin = {
         botaoSenhaVisivelLogin.classList.remove("d-none")
         botaoSenhaInvisivelLogin.classList.add("d-none")
     },
-    validacaoCriarConta(login){
+    validacaoCriarConta(){
         const senha = document.querySelector("#senha-criar-conta").value
         const confirmarSenha = document.querySelector("#confirmar-senha").value
         const email =document.querySelector("#email-criar-conta").value
@@ -69,7 +69,6 @@ const funcoesLogin = {
                 alert("Senhas não coincidem")
             }else{
                 alert("Bem vindo aos serviços Goodwe")
-                login = 1
                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCriarConta) || new bootstrap.Offcanvas(offcanvasCriarConta)
                 offcanvas.hide()
             } 
@@ -83,8 +82,10 @@ const funcoesLogin = {
             alert("Preencha todos os campos para efetuar o login")
         }else{
             alert("Logado com sucesso")
+            let login = true
             const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasLogin) || new bootstrap.Offcanvas(offcanvasLogin)
             offcanvas.hide()
+            return login
         }
     }
 }
