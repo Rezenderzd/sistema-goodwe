@@ -22,6 +22,7 @@
               <button type="button" class="btn btn-outline-danger botoes-nav" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" id="ver-cidade">Ver Cidade</button>
               <button class="btn btn-outline-danger botoes-nav" id="ativar-economia">Ativar economia bateria</button>
               <button class="btn btn-outline-danger botoes-nav" id="desativar-economia">Desativar economia bateria</button>
+              <button class="btn btn-outline-primary botoes-nav" id="login" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin" aria-controls="staticBackdrop">Login</button>
             </div>
           </div>
         </div>
@@ -122,9 +123,64 @@
           <p id="aviso">Nenhum item conectado</p>
         </div>
       </div>
+      
+      <!--Offcanvas login-->
+      <div class="offcanvas offcanvas-login" data-bs-backdrop="static" tabindex="-1" id="offcanvasLogin" aria-labelledby="staticBackdropLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title-login" id="staticBackdropLabel">Faça seu login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class='input-group-login'>
+            <input type="text" class="form-control" placeholder="E-mail" aria-label="Username" aria-describedby="visible-addon" id="email-login">
+            <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+            <div class="icon-senha">
+              <input type="password" class="form-control" placeholder="Senha" aria-label="Username" aria-describedby="visible-addon" id="senha-login">
+              <i class="fa-solid fa-eye" id="senha-login-visivel"></i>
+              <i class="fa-solid fa-eye-slash d-none" id="senha-login-invisivel"></i>
+              <input type="password" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+            </div>
+            <div class="botoes-login">
+              <button type="button" class="btn btn-outline-danger btn-login" id="botao-logar">Logar</button>
+              <button type="button" class="btn btn-outline-danger btn-login" id="botao-criar-conta-aba" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCriarConta" aria-controls="staticBackdrop">Criar conta</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Offcanvas criar conta-->
+      <div class="offcanvas offcanvas-criar-conta" data-bs-backdrop="static" tabindex="-1" id="offcanvasCriarConta" aria-labelledby="staticBackdropLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title-login" id="staticBackdropLabel">Crie sua conta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class='input-group-login'>
+            <input type="text" class="form-control" placeholder="E-mail" aria-label="Username" aria-describedby="visible-addon" id="email-criar-conta">
+            <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+            <div class="icon-senha">
+              <input type="password" class="form-control" placeholder="Senha" aria-label="Username" aria-describedby="visible-addon" id="senha-criar-conta">
+              <i class="fa-solid fa-eye" id="senha-criar-conta-visivel"></i>
+              <i class="fa-solid fa-eye-slash d-none" id="senha-criar-conta-invisivel"></i>
+              <input type="password" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+            </div>
+            <div class="icon-senha">
+              <input type="password" class="form-control" placeholder="Confirma a senha" aria-label="Username" aria-describedby="visible-addon" id="confirmar-senha">
+              <i class="fa-solid fa-eye" id="confirmar-senha-criar-conta-visivel"></i>
+              <i class="fa-solid fa-eye-slash d-none" id="confirmar-senha-criar-conta-invisivel"></i>
+              <input type="password" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+            </div>
+            <div class="botoes-login">
+              <button type="button" class="btn btn-outline-danger btn-login" id="botao-criar-conta">Criar conta</button>
+              <button type="button" class="btn btn-outline-danger btn-login" id="botao-ja-tenho-conta" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin" aria-controls="staticBackdrop">Ja tenho conta</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="main.js" type="module"></script>
         <script src="graficos.js" type="module"></script>
 </body>

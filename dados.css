@@ -47,6 +47,55 @@
     height: 250px !important;
 }
 
+.input-group-login{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.offcanvas-login, .offcanvas-criar-conta{
+    top: 15%;
+    bottom: 15%;
+    left: 10%;
+    width: 80%;
+    height: 450px;
+    border-radius: 5px;
+}
+
+.offcanvas-title-login{
+    display: flex;
+    font-size: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.botoes-login{
+    display: flex;
+    justify-content: space-around;
+    gap: 100px;
+    margin-top: 50px;
+}
+
+.btn-login{
+    padding: 10px;
+    font-size: 20px;
+}
+
+.icon-senha{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: start !important;
+    gap: 30px;
+}
+
+i{
+    font-size: 20px !important;
+    cursor: pointer;
+}
 
 .input-group{
     margin-top: 30px;

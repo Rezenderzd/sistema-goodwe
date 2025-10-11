@@ -2,6 +2,7 @@ import conjuntoItensFor from "./pegandoApiTempo.js"
 import apiFuncoes from "./apiFuncoes.js"
 import ativandoBotaoGrafico from "./botoesGraficos.js"
 import gerandoTodosGraficos from "./gerandoGraficos.js"
+import funcoesLogin from "./login.js"
 
 //Pegar o nome da cidade e  transforma-lo em compativel para a url
 
@@ -20,6 +21,16 @@ const loadingPergunta = document.querySelector("#loading-pergunta")
 const telaPrioridade = document.querySelector("#prioridades")
 let nomeCidade;
 const botaoDesativar = document.querySelector("#desativar-economia")
+const botaoSenhaVisivelLogin = document.querySelector("#senha-login-visivel")
+const botaoSenhaInvisivelLogin = document.querySelector("#senha-login-invisivel")
+const botaoConfirmarSenhaVisivelCriar = document.querySelector("#confirmar-senha-criar-conta-visivel")
+const botaoConfirmarSenhaInvisivelCriar = document.querySelector("#confirmar-senha-criar-conta-invisivel")
+const botaoSenhaVisivelCriar = document.querySelector("#senha-criar-conta-visivel")
+const botaoSenhaInvisivelCriar = document.querySelector("#senha-criar-conta-invisivel")
+const botaoCriarConta = document.querySelector("#botao-criar-conta")
+const botaoLogar = document.querySelector("#botao-logar")
+let logado = 0
+
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
 
@@ -194,3 +205,36 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
 })
 
 
+
+botaoSenhaVisivelLogin.addEventListener("click",()=>{
+        funcoesLogin.visualizarSenhaLogin()
+})
+
+
+botaoSenhaInvisivelLogin.addEventListener("click",()=>{
+        funcoesLogin.senhaLoginInvisivel()
+})
+
+botaoConfirmarSenhaVisivelCriar.addEventListener("click",()=>{
+        funcoesLogin.visualizarConfirmarSenhaCriar()
+})
+
+botaoConfirmarSenhaInvisivelCriar.addEventListener("click",()=>{
+        funcoesLogin.confirmarSenhaInvisivel()
+})
+
+botaoSenhaVisivelCriar.addEventListener("click",()=>{
+        funcoesLogin.visualizarSenhaCriar()
+})
+
+botaoSenhaInvisivelCriar.addEventListener("click",()=>{
+        funcoesLogin.senhaInvisivelCriar()
+})
+
+botaoCriarConta.addEventListener("click",()=>{
+        funcoesLogin.validacaoCriarConta(logado)
+})
+
+botaoLogar.addEventListener("click",()=>{
+        funcoesLogin.confirmarLogin()
+})
