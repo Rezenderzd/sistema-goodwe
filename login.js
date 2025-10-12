@@ -58,19 +58,23 @@ const funcoesLogin = {
         botaoSenhaInvisivelLogin.classList.add("d-none")
     },
     validacaoCriarConta(){
+        let criarConta = false
         const senha = document.querySelector("#senha-criar-conta").value
         const confirmarSenha = document.querySelector("#confirmar-senha").value
         const email =document.querySelector("#email-criar-conta").value
         const offcanvasCriarConta = document.querySelector('#offcanvasCriarConta')
+        const avisoCriarConta = document.querySelector("#aviso-criar-conta")
         if(senha===''||email==''||confirmarSenha==''){
-            alert("Preencha todos os campos antes de criar a conta")
+            avisoCriarConta.textContent = "Preencha todos os campos antes de criar a conta"
         }else{
             if(senha!==confirmarSenha){
-                alert("Senhas não coincidem")
+                avisoCriarConta.textContent = "Senhas não coincidem"
             }else{
                 alert("Bem vindo aos serviços Goodwe")
                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCriarConta) || new bootstrap.Offcanvas(offcanvasCriarConta)
                 offcanvas.hide()
+                criarConta = true
+                return criarConta
             } 
         }
     },
@@ -78,8 +82,9 @@ const funcoesLogin = {
         const campoEmail = document.querySelector("#email-login").value
         const campoSenha = document.querySelector("#senha-login").value
         const offcanvasLogin = document.querySelector('#offcanvasLogin')
+        const avisoLogin = document.querySelector("#aviso-login")
         if(campoEmail==''||campoSenha==''){
-            alert("Preencha todos os campos para efetuar o login")
+            avisoLogin.textContent = "Preencha todos os campos para efetuar o login"
         }else{
             alert("Logado com sucesso")
             let login = true

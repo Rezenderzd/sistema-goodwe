@@ -222,20 +222,24 @@ botaoSenhaInvisivelCriar.addEventListener("click",()=>{
 })
 
 botaoCriarConta.addEventListener("click",async ()=>{
-        funcoesLogin.validacaoCriarConta()
-        const email = document.querySelector("#email-criar-conta").value
-        const senha = document.querySelector("#senha-criar-conta").value
-        try {
-                const response = await fetch('http://127.0.0.1:5003/users', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({email,senha})
-                });
-                alert("Criado com sucesso")
-              } catch (error) {
-                console.error(error);
-                alert(`${error}`);
-              }
+        contaCriada = funcoesLogin.validacaoCriarConta()
+        if(contaCriada){
+                const email = document.querySelector("#email-criar-conta").value
+                const senha = document.querySelector("#senha-criar-conta").value
+                try {
+                        const response = await fetch('http://127.0.0.1:5003/users', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({email,senha})
+                        });
+                        alert("Criado com sucesso")
+                      } catch (error) {
+                        console.error(error)
+                        alert(`${error}`)
+                      }
+        }else{
+                return 0
+        }
 })
 
 botaoLogar.addEventListener("click",async ()=>{
