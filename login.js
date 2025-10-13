@@ -70,9 +70,6 @@ const funcoesLogin = {
             if(senha!==confirmarSenha){
                 avisoCriarConta.textContent = "Senhas não coincidem"
             }else{
-                alert("Bem vindo aos serviços Goodwe")
-                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCriarConta) || new bootstrap.Offcanvas(offcanvasCriarConta)
-                offcanvas.hide()
                 criarConta = true
                 return criarConta
             } 

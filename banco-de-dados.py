@@ -40,7 +40,7 @@ def register():
 
     cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
     if cursor.fetchone():
-        return jsonify({'error': 'Email já cadastrada'}), 409
+        return jsonify({'error': 'Email já cadastrado'}), 409
 
     cursor.execute(
         "INSERT INTO users (email, senha) VALUES (?, ?)",

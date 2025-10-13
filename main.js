@@ -78,27 +78,33 @@ botao.addEventListener("click", async (evento)=>{
 })
 
 botaoEconomia.addEventListener("click", async()=>{
-        try{
-                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
-                .then(response=> response.json())
-                .then(data=>console.log(data))
-        }catch(error){
-                alert(`Deu merda${error}`)
+        if(logado){
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))
+                }catch(error){
+                        alert(`Deu merda${error}`)
+                }
+                alert("Alexa: Ok, economia de energia será ativada.")
+        }else{
+                alert("Entre na conta para ativar o modo economia")
         }
-        alert("Alexa: Ok, economia de energia será ativada.")
-        console.log('ligado')
 })
 
 botaoDesativar.addEventListener("click", async()=>{
-        try{
-                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
-                .then(response=> response.json())
-                .then(data=>console.log(data))        
-        }catch(error){
-                alert(`Deu merda${error}`)
+        if(logado){
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))        
+                }catch(error){
+                        alert(`Deu merda${error}`)
+                }
+                alert("Alexa: Ok, modo econômia desativado")  
+        }else{
+                alert("Entre na conta para desativar o modo economia")
         }
-        alert("Alexa: Ok, modo econômia desativado")
-        console.log('desligado')     
 })
 
 document.addEventListener("click", async (evento) => {
@@ -131,7 +137,7 @@ document.addEventListener("click", async (evento) => {
         }
 })
 
-botaoIaDuvida.addEventListener("click", async()=>{
+botaoIaDuvida.addEventListener("click", async(evento)=>{
         const campoIa = document.querySelector("#lista-resposta-ia")
         if(logado){
                 try{
@@ -163,7 +169,11 @@ botaoIaDuvida.addEventListener("click", async()=>{
                 alert(`Erro ao carregar a ia: ${error}`)
         }
         }else{
-                alert("Entre com sua conta para acessar a ia")
+                loadingPergunta.style.display='none'
+                const respostaIa = document.createElement('p')
+                respostaIa.classList.add('resposta-ia')
+                campoIa.appendChild(respostaIa)
+                respostaIa.textContent = 'Entre com sua conta para acessar a ia'
         }
 })
 
@@ -190,7 +200,8 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
                         alert(`Erro ao gerar recomendacao: ${error}`)
                 }
         }else{
-                alert("Entre com sua conta para acessar a ia")
+                loadingRecomendacao.style.display = 'none'
+                campoRecomendacaoIa.textContent='Entre com sua conta para acessar a ia'
         }
 })
 
@@ -222,7 +233,7 @@ botaoSenhaInvisivelCriar.addEventListener("click",()=>{
 })
 
 botaoCriarConta.addEventListener("click",async ()=>{
-        contaCriada = funcoesLogin.validacaoCriarConta()
+        let contaCriada = funcoesLogin.validacaoCriarConta()
         if(contaCriada){
                 const email = document.querySelector("#email-criar-conta").value
                 const senha = document.querySelector("#senha-criar-conta").value
@@ -232,7 +243,19 @@ botaoCriarConta.addEventListener("click",async ()=>{
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({email,senha})
                         });
-                        alert("Criado com sucesso")
+                        const text = await response.text()
+                        const data = JSON.parse(text)
+                        const mensagemErro = data.error
+                        const avisoCriarConta = document.querySelector("#aviso-criar-conta")
+                        if(mensagemErro === 'Email já cadastrado'){
+                                avisoCriarConta.textContent = data.error
+                                contaCriada = false
+                        }else{
+                                alert("Bem vindo aos serviços Goodwe")
+                                avisoCriarConta.textContent = ''
+                                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasCriarConta) || new bootstrap.Offcanvas(offcanvasCriarConta)
+                                offcanvas.hide()
+                        }
                       } catch (error) {
                         console.error(error)
                         alert(`${error}`)
