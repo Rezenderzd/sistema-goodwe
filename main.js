@@ -29,11 +29,27 @@ const botaoSenhaVisivelCriar = document.querySelector("#senha-criar-conta-visive
 const botaoSenhaInvisivelCriar = document.querySelector("#senha-criar-conta-invisivel")
 const botaoCriarConta = document.querySelector("#botao-criar-conta")
 const botaoLogar = document.querySelector("#botao-logar")
+const botaoCriarContaAba = document.querySelector("#botao-criar-conta-aba")
 let logado = false
+const botaoIaPergunta = document.querySelector("#btn-campo-ia")
+const botaoLoginPagina = document.querySelector("#login")
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
 
+
+botaoLoginPagina.addEventListener("click", ()=>{
+        document.querySelector("#email-login").value = ''
+        document.querySelector("#senha-login").value = ''
+        document.querySelector("#aviso-login").textContent = ''
+})
+
+botaoCriarContaAba.addEventListener("click",()=>{
+        document.querySelector("#email-criar-conta").value = ''
+        document.querySelector("#senha-criar-conta").value = ''
+        document.querySelector("#confirmar-senha").value = ''
+        document.querySelector("#aviso-criar-conta").textContent = ''
+})
 
 botaoCampoIa.addEventListener("click", ()=>{
         document.querySelector("#pergunta-ia").value = ''
@@ -135,6 +151,11 @@ document.addEventListener("click", async (evento) => {
                         mensagemAviso.textContent = ''
                 }
         }
+})
+
+botaoIaPergunta.addEventListener("click",()=>{
+        const campoIa = document.querySelector("#lista-resposta-ia")
+        campoIa.innerHTML = ''
 })
 
 botaoIaDuvida.addEventListener("click", async(evento)=>{
@@ -267,4 +288,31 @@ botaoCriarConta.addEventListener("click",async ()=>{
 
 botaoLogar.addEventListener("click",async ()=>{
         logado = funcoesLogin.confirmarLogin()
+        if(logado){
+                let emailLogin = document.querySelector("#email-login").value
+                let senhaLogin = document.querySelector("#senha-login").value
+                const offcanvasLogin = document.querySelector('#offcanvasLogin')
+                let avisoLogin = document.querySelector("#aviso-login")
+                try{
+                        const response = await fetch('http://127.0.0.1:5003/buscarLogin',{
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({emailLogin,senhaLogin})
+                        })
+                        const text = await response.text()
+                        const data = JSON.parse(text)
+                        const mensagemErro = data.error
+                        const mensagemSucesso = data.message
+                        if(mensagemErro===''){
+                                alert(mensagemSucesso)
+                                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasLogin) || new bootstrap.Offcanvas(offcanvasLogin)
+                                offcanvas.hide()
+                        }else{
+                                avisoLogin.textContent=mensagemErro
+                                logado = false
+                        }
+                }catch(error){
+                        alert(`Erro na validação do login: ${error}`)
+                }
+        }
 })

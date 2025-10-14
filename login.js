@@ -78,15 +78,11 @@ const funcoesLogin = {
     confirmarLogin(){
         const campoEmail = document.querySelector("#email-login").value
         const campoSenha = document.querySelector("#senha-login").value
-        const offcanvasLogin = document.querySelector('#offcanvasLogin')
         const avisoLogin = document.querySelector("#aviso-login")
         if(campoEmail==''||campoSenha==''){
             avisoLogin.textContent = "Preencha todos os campos para efetuar o login"
         }else{
-            alert("Logado com sucesso")
             let login = true
-            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasLogin) || new bootstrap.Offcanvas(offcanvasLogin)
-            offcanvas.hide()
             return login
         }
     }

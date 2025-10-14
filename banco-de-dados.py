@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS #importa o cors para permitir requisicão de outros dominios
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 conn = pyodbc.connect(
     'DRIVER={ODBC Driver 17 for SQL Server};'
@@ -16,7 +16,7 @@ conn = pyodbc.connect(
 
 cursor = conn.cursor()
 cursor.execute("SELECT DB_NAME() AS NomeDoBanco")
-print("✅ Conectado ao banco:", cursor.fetchone()[0])
+print("✅ Conectado ao banco:", cursor.fetchone()[0]) #confirma se o banco de dados está funcionando
 
 def criar_tabela():
     cursor.execute("""
@@ -51,6 +51,23 @@ def register():
     user_id = cursor.fetchone()[0]
 
     return jsonify({'id': user_id, 'message': 'Email cadastrada com sucesso!'}), 201
+
+@app.route('/buscarLogin', methods = ['POST'])
+def bucarEmail():
+    data = request.get_json()
+    email = data.get('emailLogin')
+    senha = data.get('senhaLogin')
+
+    cursor.execute("SELECT id, senha FROM users WHERE email=?",(email,))
+    row = cursor.fetchone()
+
+    if not row:
+        return jsonify({'error': 'Email não cadastrado'})
+    senhaCerta = row [1]
+    if senhaCerta == senha:
+        return jsonify({'message': 'Bem vindo aos serviços Goodwe!', 'error': ''})
+    else:
+        return jsonify({'error': 'Email ou senha inválidos'})
 
 
 
