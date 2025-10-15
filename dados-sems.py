@@ -18,7 +18,7 @@ df = df.set_index("Time")
 df.index = pd.to_datetime(df.index, dayfirst=True)
 
 # Resample por hora
-df_hourly = df.resample("1H").mean()
+df_hourly = df.resample("1h").mean()
 
 # Extrair os dados em arrays
 soc = df_hourly["SOC(%)"].round(2).tolist()

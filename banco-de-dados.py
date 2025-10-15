@@ -71,6 +71,44 @@ def bucarEmail():
 
 
 
+def criar_tabela_consumo(): #consumo_total INT,
+    cursor.execute("""
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='consumo' AND xtype='U')
+    CREATE TABLE consumo (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        user_id INT,
+        email NVARCHAR(100) NOT NULL,
+        comando VARCHAR(100) NOT NULL,
+        horario_comando DATETIME DEFAULT GETDATE(),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (email) REFERENCES users(email)
+    )
+    """)
+    conn.commit()
+    print("✅ Tabela 'consumo' pronta.")
+
+@app.route('/consumo', methods =['POST'])
+def atualizando_consumo():
+    data = request.get_json()
+    acao = data.get('acao')
+    email = data.get('email')
+    try:
+        cursor.execute('SELECT id FROM users WHERE email=?',(email,))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({'error':'Usuário não encontrado'}), 404
+
+        id = row[0]
+        cursor.execute('INSERT INTO consumo (user_id, email, comando) VALUES (?, ?, ?)',(id,email,acao))
+        conn.commit()
+        return jsonify({'message': f'Modo de energia {acao} com sucesso', 'error':''})
+    except Exception as e:
+        print("Erro no /consumo:", e)
+        return jsonify({'error':f'Houve um erro ao {acao} o modo'})
+
+
+
 if __name__ == '__main__':
     criar_tabela()
+    criar_tabela_consumo()
     app.run(debug=True, port=5003)

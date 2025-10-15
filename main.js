@@ -33,6 +33,7 @@ const botaoCriarContaAba = document.querySelector("#botao-criar-conta-aba")
 let logado = false
 const botaoIaPergunta = document.querySelector("#btn-campo-ia")
 const botaoLoginPagina = document.querySelector("#login")
+let usuarioLogado = null
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
@@ -95,60 +96,108 @@ botao.addEventListener("click", async (evento)=>{
 
 botaoEconomia.addEventListener("click", async()=>{
         if(logado){
+                // try{
+                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                //         .then(response=> response.json())
+                //         .then(data=>console.log(data))
+                // }catch(error){
+                //         alert(`Erro ao ativar o modo${error}`)
+                //}
                 try{
-                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
-                        .then(response=> response.json())
-                        .then(data=>console.log(data))
+                        const email = usuarioLogado
+                        const acao = 'ligado'
+                        const response = await fetch("http://127.0.0.1:5003/consumo",{
+                                method : 'POST',
+                                headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                                body: JSON.stringify({email, acao}) //transforma a pergunta em um JSON
+                        })
+                        let texto = await response.text()
+                        let data = JSON.parse(texto)
+                        let mensagemAtivadoErro = data.error
+                        let mensagemAtivadoSucesso = data.message
+                        if(mensagemAtivadoErro===''){
+                                alert(mensagemAtivadoSucesso)
+                        }else{
+                                alert(mensagemAtivadoErro)
+                        } 
                 }catch(error){
-                        alert(`Deu merda${error}`)
+                        alert(`Erro ao ligar o modo economia ${error}`)
                 }
-                alert("Alexa: Ok, economia de energia será ativada.")
-        }else{
+        }
+        else{
                 alert("Entre na conta para ativar o modo economia")
         }
 })
 
 botaoDesativar.addEventListener("click", async()=>{
         if(logado){
+                // try{
+                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                //         .then(response=> response.json())
+                //         .then(data=>console.log(data))        
+                // }catch(error){
+                //         alert(`Erro  ao desativar o modo${error}`)
+                // }
                 try{
-                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
-                        .then(response=> response.json())
-                        .then(data=>console.log(data))        
+                        const email = usuarioLogado
+                        const acao = 'desligado'
+                        const response = await fetch("http://127.0.0.1:5003/consumo",{
+                                method : 'POST',
+                                headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                                body: JSON.stringify({email, acao}) //transforma a pergunta em um JSON
+                        })
+                        let texto = await response.text()
+                        let data = JSON.parse(texto)
+                        let mensagemDesativadoErro = data.error
+                        let mensagemDesativadoSucesso = data.message
+                        if(mensagemDesativadoErro===''){
+                                alert(mensagemDesativadoSucesso)
+                        }else{
+                                alert(mensagemDesativadoErro)
+                        }
                 }catch(error){
-                        alert(`Deu merda${error}`)
+                        alert(`Erro ao desativar o modo economia ${error}`)
                 }
-                alert("Alexa: Ok, modo econômia desativado")  
-        }else{
+        }
+        else{
                 alert("Entre na conta para desativar o modo economia")
         }
 })
 
 document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
-                try{
-                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
-                        .then(response=> response.json())
-                        .then(data=>console.log(data))
-                        apiFuncoes.limparLista()
-                        if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
-                               mensagemAviso.textContent = "Não há recomendações no momento"
+                if(logado){
+                        try{
+                                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                                .then(response=> response.json())
+                                .then(data=>console.log(data))
+                                apiFuncoes.limparLista()
+                                if(!listaAtual.querySelector("li")){ //se na lista atual não tiver li
+                                       mensagemAviso.textContent = "Não há recomendações no momento"
+                                }
+                                else{
+                                        mensagemAviso.textContent = ''
+                                }
+                        }catch(error){
+                                alert(`Deu merda ${error}`)
+                        }
+                        alert("Alexa: Ok, modo econômia ativado")
+                }else{
+                        alert("Entre com sua conta para aceitar a recomendação")
+                }
+        }
+        else if(evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("border-secondary")){
+                if(logado){
+                        const liAtual = evento.target.closest('li')
+                        liAtual.remove()
+                        if(!listaAtual.querySelector("li")){
+                                mensagemAviso.textContent = "Não há recomendações no momento"
                         }
                         else{
                                 mensagemAviso.textContent = ''
                         }
-                }catch(error){
-                        alert(`Deu merda ${error}`)
-                }
-                alert("Alexa: Ok, modo econômia ativado")
-        }
-        else if(evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("border-secondary")){
-                const liAtual = evento.target.closest('li')
-                liAtual.remove()
-                if(!listaAtual.querySelector("li")){
-                        mensagemAviso.textContent = "Não há recomendações no momento"
-                }
-                else{
-                        mensagemAviso.textContent = ''
+                }else{
+                        alert("Entre com sua conta para acessar recusar a recomendação")
                 }
         }
 })
@@ -286,7 +335,7 @@ botaoCriarConta.addEventListener("click",async ()=>{
         }
 })
 
-botaoLogar.addEventListener("click",async ()=>{
+botaoLogar.addEventListener("click",async function efetuarLogin(){
         logado = funcoesLogin.confirmarLogin()
         if(logado){
                 let emailLogin = document.querySelector("#email-login").value
@@ -307,6 +356,7 @@ botaoLogar.addEventListener("click",async ()=>{
                                 alert(mensagemSucesso)
                                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasLogin) || new bootstrap.Offcanvas(offcanvasLogin)
                                 offcanvas.hide()
+                                usuarioLogado = emailLogin
                         }else{
                                 avisoLogin.textContent=mensagemErro
                                 logado = false
