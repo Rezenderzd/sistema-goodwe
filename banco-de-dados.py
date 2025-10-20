@@ -62,7 +62,7 @@ def bucarEmail():
     row = cursor.fetchone()
 
     if not row:
-        return jsonify({'error': 'Email não cadastrado'})
+        return jsonify({'error': 'Email ou senha inválidos'})
     senhaCerta = row [1]
     if senhaCerta == senha:
         return jsonify({'message': 'Bem vindo aos serviços Goodwe!', 'error': ''})
@@ -105,10 +105,72 @@ def atualizando_consumo():
     except Exception as e:
         print("Erro no /consumo:", e)
         return jsonify({'error':f'Houve um erro ao {acao} o modo'})
+    
+def criar_tabela_prioridade():
+    cursor.execute("""
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='prioridade' AND xtype='U')
+        CREATE TABLE prioridade (
+            id INT IDENTITY(1,1) PRIMARY KEY,
+            user_id INT,
+            email NVARCHAR(100) NOT NULL,
+            nome_item VARCHAR(100) NOT NULL,
+            prioridade_item INT NOT NULL,
+            horario_comando DATETIME DEFAULT GETDATE(),
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (email) REFERENCES users(email)
+        )
+        """)
+    conn.commit()
+    print("✅ Tabela 'prioridade' pronta.")
+
+@app.route('/listaItens', methods = ['POST'])   
+def pegandoitens():
+    data = request.get_json()
+    email = data.get('email')
+    cursor.execute('SELECT nome_item, prioridade_item FROM prioridade WHERE email=?',(email,))
+    linhaItens = cursor.fetchall()
+    nomeItem = [linha[0] for linha in linhaItens]
+    prioridadeItem = [linha[1] for linha in linhaItens]
+    return jsonify({'nomes': nomeItem, 'prioridades': prioridadeItem})
+
+@app.route('/prioridade', methods  = ['POST'])
+def verificarPrioridade():
+    data = request.get_json()
+    email = data.get('email')
+    nomeItem = data.get('item')
+    prioridade = data.get('prioridade')
+    try:
+        cursor.execute('SELECT prioridade_item FROM prioridade WHERE nome_item=?', (nomeItem,))
+        row = cursor.fetchone()
+        if row:
+            cursor.execute('UPDATE prioridade SET prioridade_item=? WHERE email=? AND nome_item=?',(prioridade, email, nomeItem))
+            conn.commit()
+            cursor.execute('SELECT nome_item, prioridade_item FROM prioridade WHERE email=?',(email,))
+            linhaItens = cursor.fetchall()
+            nomeItem = [linha[0] for linha in linhaItens]
+            prioridadeItem = [linha[1] for linha in linhaItens]
+            return jsonify({'message':'Prioridade atualizada com sucesso', 'error':'', 'nomes': nomeItem, 'prioridades': prioridadeItem})
+        else:
+            cursor.execute('SELECT id FROM users WHERE email=?',(email,))
+            id = cursor.fetchone()
+            idUsuario = id[0]
+            cursor.execute('INSERT INTO prioridade (user_id, email, nome_item, prioridade_item) VALUES (?, ?, ?, ?)',(idUsuario, email, nomeItem, prioridade))
+            conn.commit()
+            cursor.execute('SELECT nome_item, prioridade_item FROM prioridade WHERE email=?',(email,))
+            linhaItens = cursor.fetchall()
+            nomeItem = [linha[0] for linha in linhaItens]
+            prioridadeItem = [linha[1] for linha in linhaItens]
+            return jsonify({'message':'Item adicionado!', 'error':'','nomes': nomeItem, 'prioridades': prioridadeItem})
+    except Exception as e:
+        print(f"Erro:{e}")    
+        return jsonify({'message': '', 'error': f'Erro ao executar a ação: {e}'})
+    
+
 
 
 
 if __name__ == '__main__':
     criar_tabela()
     criar_tabela_consumo()
+    criar_tabela_prioridade()
     app.run(debug=True, port=5003)

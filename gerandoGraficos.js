@@ -35,7 +35,7 @@ async function gerandoGraficoChanceChuva(horarios){
     const valores = await conjuntoItensFor ("chance_of_rain")
     let graficoChanceChuva = document.querySelector("#grafico-probabilidade-de-chuva").getContext("2d")
     if (graficoChanceChuvaExistencia) {
-      graficoChanceChuvaExistencia.destroy();
+      graficoChanceChuvaExistencia.destroy()
     }
 
   graficoChanceChuvaExistencia = new Chart(graficoChanceChuva, {
@@ -54,14 +54,14 @@ async function gerandoGraficoChanceChuva(horarios){
         }
       }
     }
-  });
+  })
 }
 
 async function gerandoGraficoPorcentagemNuvem(horarios) {
   const valores = await conjuntoItensFor ("cloud")
   let graficoPorcentagemNuvem = document.querySelector("#grafico-tempo-nublado").getContext("2d")
   if(graficoPorcentagemNuvemExistencia){
-    graficoPorcentagemNuvemExistencia.destroy();
+    graficoPorcentagemNuvemExistencia.destroy()
   }
 
   graficoPorcentagemNuvemExistencia = new Chart(graficoPorcentagemNuvem, {
@@ -83,7 +83,7 @@ async function gerandoGraficoPorcentagemNuvem(horarios) {
         }
       }
     }
-  });
+  })
 }
 
 async function gerandoGraficoGeracaoEnergia(horarios){
@@ -98,7 +98,7 @@ async function gerandoGraficoGeracaoEnergia(horarios){
   })
   let graficoProducao = document.querySelector("#grafico-producao").getContext("2d")
   if(graficoProducaoExistencia){
-    graficoProducaoExistencia.destroy();
+    graficoProducaoExistencia.destroy()
   }
   graficoProducaoExistencia = new Chart(graficoProducao, {
     type: 'line',
@@ -119,7 +119,7 @@ async function gerandoGraficoGeracaoEnergia(horarios){
         }
       }
     }
-  });
+  })
 }
 
 async function GerandoGraficoUv(horarios) {

@@ -22,8 +22,6 @@ llm = genai.GenerativeModel(
 )
 
 @app.route('/iaRecomendacao', methods=['POST']) #define a rota /iaDuvidas que só aceita o método post
-
-
 def ia_recomendacao():
     dados = request.get_json()
     nome_cidade = dados.get("cidade")

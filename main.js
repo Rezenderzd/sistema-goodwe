@@ -19,7 +19,7 @@ const campoRecomendacaoIa = document.querySelector("#resposta-recomendacao-ia")
 const loadingRecomendacao = document.querySelector("#loading-recomendacao")
 const loadingPergunta = document.querySelector("#loading-pergunta")
 const telaPrioridade = document.querySelector("#prioridades")
-let nomeCidade;
+let nomeCidade
 const botaoDesativar = document.querySelector("#desativar-economia")
 const botaoSenhaVisivelLogin = document.querySelector("#senha-login-visivel")
 const botaoSenhaInvisivelLogin = document.querySelector("#senha-login-invisivel")
@@ -34,6 +34,10 @@ let logado = false
 const botaoIaPergunta = document.querySelector("#btn-campo-ia")
 const botaoLoginPagina = document.querySelector("#login")
 let usuarioLogado = null
+const botaoConfirmarPrioridade = document.querySelector("#botao-item")
+const avisoPrioridade = document.querySelector("#aviso-prioridade")
+const tabelaPrioridade = document.querySelector(".tabela-prioridade")
+const botaoAbaPrioridade = document.querySelector("#btn-info-item")
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
@@ -74,7 +78,7 @@ botao.addEventListener("click", async (evento)=>{
         const botoesGrafico = document.querySelectorAll(".botao-grafico")
         botoesGrafico.forEach(botaoGrafico => {
                 botaoGrafico.classList.remove("selecionado")
-        });
+        })
         apiFuncoes.limparLista()
         const horas = await conjuntoItensFor("time")
         const temperatura = await conjuntoItensFor("mintemp_c")
@@ -218,7 +222,7 @@ botaoIaDuvida.addEventListener("click", async(evento)=>{
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
                         body: JSON.stringify({pergunta}) //transforma a pergunta em um JSON
-                });
+                })
                 const dados = await resposta.json()
                 document.querySelector("#pergunta-ia").value = ''
                 const respostaIa = document.createElement('p')
@@ -261,9 +265,17 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
                         })
                         campoRecomendacaoIa.textContent='Analisando dados'
                         const respostaIa = await resposta.json()
+                        const machineLearning = await  fetch ("http://127.0.0.1:5005/machineLearning",{
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                                body: JSON.stringify({usuarioLogado}) //transforma a pergunta em um JSON
+                        })
+                        const analiseMachine = await machineLearning.json()
                         loadingRecomendacao.style.display = 'none'
                         campoRecomendacaoIa.textContent=''
                         campoRecomendacaoIa.textContent = respostaIa.resposta
+                        campoRecomendacaoIa.innerHTML+=`<br><br><p>${analiseMachine.resposta}</p>`
+                        
                 }catch(error){
                         loadingRecomendacao.style.display = 'none'
                         campoRecomendacaoIa.textContent='Não foi possível carregar a resposta'
@@ -312,7 +324,7 @@ botaoCriarConta.addEventListener("click",async ()=>{
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({email,senha})
-                        });
+                        })
                         const text = await response.text()
                         const data = JSON.parse(text)
                         const mensagemErro = data.error
@@ -363,6 +375,112 @@ botaoLogar.addEventListener("click",async function efetuarLogin(){
                         }
                 }catch(error){
                         alert(`Erro na validação do login: ${error}`)
+                }
+        }
+})
+
+function primeiraLetraMaiuscula(texto) {
+        return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase()
+    }
+
+botaoConfirmarPrioridade.addEventListener("click",async ()=>{
+        if(logado){
+                let item = document.querySelector("#nome-item").value.toLowerCase()
+                let prioridade = document.querySelector("#prioridade-item").value
+                let email = usuarioLogado
+                if(item==='' || prioridade === ''){
+                        avisoPrioridade.textContent = 'Insira o nome do item e a prioridade'
+                }else{
+                        try{
+                                const response = await fetch('http://127.0.0.1:5003/prioridade',{
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/json'},
+                                        body: JSON.stringify({email,item,prioridade})
+                                })
+                                const data = await response.json()
+                                let mensagemErroPrioridade = data.error
+                                if(mensagemErroPrioridade){
+                                        alert(`Algo deu errado ${mensagemErroPrioridade}`)
+                                        return
+                                }
+                                let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
+                                let listaCombinada = listaItens.map((item, i) => ({
+                                        nome: primeiraLetraMaiuscula(item),
+                                        prioridade: data.prioridades[i]
+                                }))
+                                listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
+                                if(listaCombinada.length===0){
+                                        avisoPrioridade.textContent = 'Nenhum item cadastrado no momento'
+                                        tabelaPrioridade.classList.add('d-none')
+                                }else{
+                                        avisoPrioridade.textContent = ''
+                                        tabelaPrioridade.innerHTML = ''
+                                        tabelaPrioridade.classList.remove('d-none')
+                                        tabelaPrioridade.innerHTML= `<tr>
+                                                                        <th>Item</th>
+                                                                        <th>Prioridade</th>
+                                                                </tr>`
+                                        listaCombinada.forEach(item =>{
+                                                tabelaPrioridade.innerHTML+=
+                                                `<tr>
+                                                        <td>${item.nome}</td>
+                                                        <td>${item.prioridade}</td>
+                                                </tr>`
+                                        })
+                                }
+                                alert("Prioridade alterada com sucesso")
+                                document.querySelector("#nome-item").value = ''
+                                document.querySelector("#prioridade-item").value = ''
+        
+                        }catch(error){
+                                alert(`Erro: ${error}`)
+                        }
+                }
+        }else{
+                avisoPrioridade.textContent = 'Logue com a conta para adicionar uma prioridade'
+        }
+})
+
+botaoAbaPrioridade.addEventListener("click",async()=>{
+        let email = usuarioLogado
+        if(email===null){
+                avisoPrioridade.textContent = 'Logue com a conta para adicionar uma prioridade'
+        }else{
+                const response = await fetch('http://127.0.0.1:5003/listaItens', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({email})
+                })
+                const data = await response.json()
+                let mensagemErroPrioridade = data.error
+                if(mensagemErroPrioridade){
+                        alert(`Algo deu errado ${mensagemErroPrioridade}`)
+                        return
+                }
+                let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
+                let listaCombinada = listaItens.map((item, i) => ({
+                        nome: primeiraLetraMaiuscula(item),
+                        prioridade: data.prioridades[i]
+                }))
+                listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
+                if(listaCombinada.length===0){
+                        avisoPrioridade.textContent = 'Nenhum item cadastrado no momento'
+                        tabelaPrioridade.classList.add('d-none')
+                }else{
+                        avisoPrioridade.textContent = ''
+                        tabelaPrioridade.innerHTML = ''
+                        tabelaPrioridade.classList.remove('d-none')
+                        tabelaPrioridade.innerHTML= `<tr>
+                                                        <th>Item</th>
+                                                        <th>Prioridade</th>
+                                                </tr>`
+                        listaCombinada.forEach(item =>{
+                                tabelaPrioridade.innerHTML+=
+                                `<tr>
+                                        <td>${item.nome}</td>
+                                        <td>${item.prioridade}</td>
+                                </tr>`
+                        })
                 }
         }
 })

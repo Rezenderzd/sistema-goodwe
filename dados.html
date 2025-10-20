@@ -53,7 +53,7 @@
         </div>
       </main>
       <button type="button" class="btn btn-outline-danger botao-ia recomendacao" data-bs-toggle="offcanvas" data-bs-target="#offcanvasStart" aria-controls="offcanvasTop" id="recomendacao-ia">Recomendação ia</button>
-      <button type="button" class="btn btn-outline-danger botao-informacao propriedades" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" id="btn-info-inv">Prioridades do dispositivo</button>
+      <button type="button" class="btn btn-outline-danger botao-informacao propriedades" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" id="btn-info-item">Prioridades do dispositivo</button>
       <button type="button" class="btn btn-outline-danger botao-ia pergunta" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasTop" id="btn-campo-ia">Perguntar a IA</button>
 
 
@@ -122,7 +122,13 @@
               <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
               <button type="button" class="btn btn-outline-danger" id="botao-item">Confirmar</button>
           </div>
-          <p id="aviso">Nenhum item conectado</p>
+          <p id="aviso-prioridade"></p>
+          <table class="tabela-prioridade table table-bordered border-danger d-none">
+            <tr>
+              <th>Item</th>
+              <th>Prioridade</th>
+            </tr>
+          </table>
         </div>
       </div>
       
