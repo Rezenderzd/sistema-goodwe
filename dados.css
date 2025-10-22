@@ -208,6 +208,11 @@ i{
     bottom: 30px;
 }
 
+.icone-excluir, .coluna-excluir{
+    display: flex;
+    justify-content: center;
+}
+
 #offcanvasRight{
     width: 600px;
 }

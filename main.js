@@ -406,10 +406,18 @@ botaoConfirmarPrioridade.addEventListener("click",async ()=>{
                                         alert(`Algo deu errado ${mensagemErroPrioridade}`)
                                         return
                                 }
+                                let listaConsumo = data.nomes
+                                const dadosConsumo = await fetch('http://127.0.0.1:5003/consumoItens', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({listaConsumo})
+                                })
+                                const dados = await dadosConsumo.json()
                                 let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
                                 let listaCombinada = listaItens.map((item, i) => ({
                                         nome: primeiraLetraMaiuscula(item),
-                                        prioridade: data.prioridades[i]
+                                        prioridade: data.prioridades[i],
+                                        consumo: dados.listaConsumo[i]
                                 }))
                                 listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
                                 if(listaCombinada.length===0){
@@ -422,13 +430,16 @@ botaoConfirmarPrioridade.addEventListener("click",async ()=>{
                                         tabelaPrioridade.innerHTML= `<tr>
                                                                         <th>Item</th>
                                                                         <th>Prioridade</th>
+                                                                        <th>Consumo/segundo</th>
+                                                                        <th class='coluna-excluir'>Excluir</th>
                                                                 </tr>`
                                         listaCombinada.forEach(item =>{
                                                 tabelaPrioridade.innerHTML+=
                                                 `<tr>
-                                                        <td>${item.nome} <i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
+                                                        <td>${item.nome}</td>
                                                         <td>${item.prioridade}</td>
-                                                        
+                                                        <td>${item.consumo} J/s</td>
+                                                        <td class='icone-excluir'><i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
                                                 </tr>`
                                         })
                                 }
@@ -461,10 +472,18 @@ botaoAbaPrioridade.addEventListener("click",async()=>{
                         alert(`Algo deu errado ${mensagemErroPrioridade}`)
                         return
                 }
+                let listaConsumo = data.nomes
+                const dadosConsumo = await fetch('http://127.0.0.1:5003/consumoItens', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({listaConsumo})
+                })
+                const dados = await dadosConsumo.json()
                 let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
                 let listaCombinada = listaItens.map((item, i) => ({
                         nome: primeiraLetraMaiuscula(item),
-                        prioridade: data.prioridades[i]
+                        prioridade: data.prioridades[i],
+                        consumo: dados.listaConsumo[i]
                 }))
                 listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
                 if(listaCombinada.length===0){
@@ -477,12 +496,16 @@ botaoAbaPrioridade.addEventListener("click",async()=>{
                         tabelaPrioridade.innerHTML= `<tr>
                                                         <th>Item</th>
                                                         <th>Prioridade</th>
+                                                        <th>Consumo/segundo</th>
+                                                        <th class='coluna-excluir'>Excluir</th>
                                                 </tr>`
                         listaCombinada.forEach(item =>{
                                 tabelaPrioridade.innerHTML+=
                                 `<tr>
-                                        <td>${item.nome} <i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
+                                        <td>${item.nome}</td>
                                         <td>${item.prioridade}</td>
+                                        <td>${item.consumo} J/s</td>
+                                        <td class='icone-excluir'><i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
                                 </tr>`
                         })
                 }
@@ -492,12 +515,9 @@ botaoAbaPrioridade.addEventListener("click",async()=>{
 offcanvasPrioridade.addEventListener("click",async (e)=>{
         if(e.target.classList.contains('fa-trash')){
                 try{
-
                         const item = e.target.dataset.id
                         let itemDiminuitivo = item.toLowerCase()
-                        console.log(itemDiminuitivo)
                         const usuario = usuarioLogado
-                        console.log(usuarioLogado)
                         const response = await fetch('http://127.0.0.1:5003/excluir',{
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'},
@@ -509,10 +529,18 @@ offcanvasPrioridade.addEventListener("click",async (e)=>{
                                 alert(`Algo deu errado ${mensagemErroExcluir}`)
                                 return
                         }
+                        let listaConsumo = data.nomes
+                        const dadosConsumo = await fetch('http://127.0.0.1:5003/consumoItens', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({listaConsumo})
+                        })
+                        const dados = await dadosConsumo.json()
                         let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
                         let listaCombinada = listaItens.map((item, i) => ({
                                 nome: primeiraLetraMaiuscula(item),
-                                prioridade: data.prioridades[i]
+                                prioridade: data.prioridades[i],
+                                consumo: dados.listaConsumo[i]
                         }))
                         listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
                         if(listaCombinada.length===0){
@@ -525,15 +553,20 @@ offcanvasPrioridade.addEventListener("click",async (e)=>{
                                 tabelaPrioridade.innerHTML= `<tr>
                                                                 <th>Item</th>
                                                                 <th>Prioridade</th>
+                                                                <th>Consumo/segundo</th>
+                                                                <th class='coluna-excluir'>Excluir</th>
                                                         </tr>`
                                 listaCombinada.forEach(item =>{
                                         tabelaPrioridade.innerHTML+=
                                         `<tr'>
-                                                <td>${item.nome} <i class="fa-solid fa-trash" id='${item.nome}'></i></td>
+                                                <td>${item.nome}</td>
                                                 <td>${item.prioridade}</td>
+                                                <td>${item.consumo} J/s</td>
+                                                <td class='icone-excluir'><i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
                                         </tr>`
                                 })
                         }
+                        alert("Item excluido")
                 }catch(error){
                         alert(`Erro ao excluir ${error}`)
                 }

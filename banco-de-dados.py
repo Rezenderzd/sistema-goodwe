@@ -183,10 +183,40 @@ def excluir_itens():
         return jsonify({'message':'', 'error': 'Erro ao excluir item'})
 
 
+def criar_tabela_eletrodoméstico():
+    cursor.execute("""
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='eletrodoméstico' AND xtype='U')
+        CREATE TABLE eletrodoméstico (
+            id INT IDENTITY(1,1) PRIMARY KEY,
+            nome_item VARCHAR(100) NOT NULL,
+            consumo INT NOT NULL
+        )
+        """)
+    conn.commit()
+    print("✅ Tabela 'eletrodoméstico' pronta.")
+
+@app.route('/consumoItens',  methods = ['POST'])
+def pegando_consumo():
+    data  = request.get_json()
+    try:
+        listaItens = data.get('listaConsumo')
+        listaConsumoItens = []
+        for item in listaItens:
+            cursor.execute('SELECT consumo FROM eletrodoméstico WHERE nome_item=?',(item,))
+            consumo = cursor.fetchone()
+            if consumo:  # se achou o item no banco
+                listaConsumoItens.append(consumo[0])
+            else:
+                print(f"Aviso: item '{item}' não encontrado no banco.")
+                listaConsumoItens.append(None)  # ou 0, se preferir
+        return jsonify({'listaConsumo': listaConsumoItens})
+    except Exception as e:
+        print(f'Erro: {e}')
 
 
 if __name__ == '__main__':
     criar_tabela()
     criar_tabela_consumo()
     criar_tabela_prioridade()
+    criar_tabela_eletrodoméstico()
     app.run(debug=True, port=5003)
