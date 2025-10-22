@@ -40,8 +40,8 @@ const tabelaPrioridade = document.querySelector(".tabela-prioridade")
 const botaoAbaPrioridade = document.querySelector("#btn-info-item")
 const offcanvasPrioridade = document.querySelector("#offcanvasBottom")
 
-let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
-let linkIpTasmota  = `http://${ipTasmota}`
+let ipTasmota  //lógica do ip (se contém 1, ele existe algo do tipo)
+let linkIpTasmota  = `http://${'192.168.15.53'}`
 
 
 botaoLoginPagina.addEventListener("click", ()=>{
@@ -101,13 +101,13 @@ botao.addEventListener("click", async (evento)=>{
 
 botaoEconomia.addEventListener("click", async()=>{
         if(logado){
-                // try{
-                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
-                //         .then(response=> response.json())
-                //         .then(data=>console.log(data))
-                // }catch(error){
-                //         alert(`Erro ao ativar o modo${error}`)
-                //}
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))
+                }catch(error){
+                        alert(`Erro ao ativar o modo${error}`)
+                }
                 try{
                         const email = usuarioLogado
                         const acao = 'ligado'
@@ -136,13 +136,13 @@ botaoEconomia.addEventListener("click", async()=>{
 
 botaoDesativar.addEventListener("click", async()=>{
         if(logado){
-                // try{
-                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
-                //         .then(response=> response.json())
-                //         .then(data=>console.log(data))        
-                // }catch(error){
-                //         alert(`Erro  ao desativar o modo${error}`)
-                // }
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))        
+                }catch(error){
+                        alert(`Erro  ao desativar o modo${error}`)
+                }
                 try{
                         const email = usuarioLogado
                         const acao = 'desligado'
@@ -173,7 +173,7 @@ document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
                 if(logado){
                         try{
-                                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
                                 .then(response=> response.json())
                                 .then(data=>console.log(data))
                                 apiFuncoes.limparLista()
