@@ -38,6 +38,7 @@ const botaoConfirmarPrioridade = document.querySelector("#botao-item")
 const avisoPrioridade = document.querySelector("#aviso-prioridade")
 const tabelaPrioridade = document.querySelector(".tabela-prioridade")
 const botaoAbaPrioridade = document.querySelector("#btn-info-item")
+const offcanvasPrioridade = document.querySelector("#offcanvasBottom")
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
@@ -265,10 +266,11 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
                         })
                         campoRecomendacaoIa.textContent='Analisando dados'
                         const respostaIa = await resposta.json()
+                        let usuario = usuarioLogado
                         const machineLearning = await  fetch ("http://127.0.0.1:5005/machineLearning",{
                                 method: 'POST',
                                 headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
-                                body: JSON.stringify({usuarioLogado}) //transforma a pergunta em um JSON
+                                body: JSON.stringify({usuario}) //transforma a pergunta em um JSON
                         })
                         const analiseMachine = await machineLearning.json()
                         loadingRecomendacao.style.display = 'none'
@@ -386,6 +388,7 @@ function primeiraLetraMaiuscula(texto) {
 botaoConfirmarPrioridade.addEventListener("click",async ()=>{
         if(logado){
                 let item = document.querySelector("#nome-item").value.toLowerCase()
+                item = item.trim()
                 let prioridade = document.querySelector("#prioridade-item").value
                 let email = usuarioLogado
                 if(item==='' || prioridade === ''){
@@ -423,12 +426,13 @@ botaoConfirmarPrioridade.addEventListener("click",async ()=>{
                                         listaCombinada.forEach(item =>{
                                                 tabelaPrioridade.innerHTML+=
                                                 `<tr>
-                                                        <td>${item.nome}</td>
+                                                        <td>${item.nome} <i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
                                                         <td>${item.prioridade}</td>
+                                                        
                                                 </tr>`
                                         })
                                 }
-                                alert("Prioridade alterada com sucesso")
+                                alert(data.message)
                                 document.querySelector("#nome-item").value = ''
                                 document.querySelector("#prioridade-item").value = ''
         
@@ -477,10 +481,62 @@ botaoAbaPrioridade.addEventListener("click",async()=>{
                         listaCombinada.forEach(item =>{
                                 tabelaPrioridade.innerHTML+=
                                 `<tr>
-                                        <td>${item.nome}</td>
+                                        <td>${item.nome} <i class="fa-solid fa-trash" data-id='${item.nome}'></i></td>
                                         <td>${item.prioridade}</td>
                                 </tr>`
                         })
                 }
+        }
+})
+
+offcanvasPrioridade.addEventListener("click",async (e)=>{
+        if(e.target.classList.contains('fa-trash')){
+                try{
+
+                        const item = e.target.dataset.id
+                        let itemDiminuitivo = item.toLowerCase()
+                        console.log(itemDiminuitivo)
+                        const usuario = usuarioLogado
+                        console.log(usuarioLogado)
+                        const response = await fetch('http://127.0.0.1:5003/excluir',{
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({usuario, itemDiminuitivo})
+                        })
+                        const data = await response.json()
+                        let mensagemErroExcluir = data.error
+                        if(mensagemErroExcluir){
+                                alert(`Algo deu errado ${mensagemErroExcluir}`)
+                                return
+                        }
+                        let listaItens = data.nomes.map(nome => primeiraLetraMaiuscula(nome))
+                        let listaCombinada = listaItens.map((item, i) => ({
+                                nome: primeiraLetraMaiuscula(item),
+                                prioridade: data.prioridades[i]
+                        }))
+                        listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
+                        if(listaCombinada.length===0){
+                                avisoPrioridade.textContent = 'Nenhum item cadastrado no momento'
+                                tabelaPrioridade.classList.add('d-none')
+                        }else{
+                                avisoPrioridade.textContent = ''
+                                tabelaPrioridade.innerHTML = ''
+                                tabelaPrioridade.classList.remove('d-none')
+                                tabelaPrioridade.innerHTML= `<tr>
+                                                                <th>Item</th>
+                                                                <th>Prioridade</th>
+                                                        </tr>`
+                                listaCombinada.forEach(item =>{
+                                        tabelaPrioridade.innerHTML+=
+                                        `<tr'>
+                                                <td>${item.nome} <i class="fa-solid fa-trash" id='${item.nome}'></i></td>
+                                                <td>${item.prioridade}</td>
+                                        </tr>`
+                                })
+                        }
+                }catch(error){
+                        alert(`Erro ao excluir ${error}`)
+                }
+
         }
 })

@@ -25,7 +25,7 @@ CHAVE_API_KEY = os.getenv("API_GEMINI_KEY")
 genai.configure(api_key=CHAVE_API_KEY)
 MODELO_ESCOLHIDO = "gemini-2.5-flash"
 
-prompt_sistema = "Você analisará os dados do cliente e tentará identificar padrões. Caso não haja padrões notórios, responda somente 'Não é possível automatizar.'"
+prompt_sistema = "Você analisará os dados do cliente e tentará identificar padrões.Seja simples, objetivo e não fale sobre  os arrays, fale como ocorrências.Lemrbre-se que os padrões precisam ser algo claro e nitido na análise, não ocorrencias aleatórias.Além disso, os comandos sempre serão os mesmos (ligado e desligado), correlacione tanto os horários quanto os comandos para tentar  encontrar algo. Exemplo: 'O cliente sempre liga o modo às 18:00' ou 'O cliente sempre desliga entre 21:00 e 22:30'. Caso não haja padrões notórios, responda somente 'Não é possível automatizar.'"
 
 llm = genai.GenerativeModel(
     model_name=MODELO_ESCOLHIDO,
@@ -35,8 +35,8 @@ llm = genai.GenerativeModel(
 @app.route('/machineLearning', methods = ['POST'])
 def identificando_padroes():
     dados = request.get_json()
-    email = dados.get('email')
-    conn.execute('SELECT comando, horario_comando FROM consumo WHERE email=?',(email,))
+    email = dados.get('usuario')
+    cursor.execute('SELECT comando, horario_comando FROM consumo WHERE email=?',(email,))
     rows = cursor.fetchall()
     horario = [row[1] for row in rows]
     comando = [row[0] for row in rows]

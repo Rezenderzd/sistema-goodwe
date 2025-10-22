@@ -140,7 +140,7 @@ def verificarPrioridade():
     nomeItem = data.get('item')
     prioridade = data.get('prioridade')
     try:
-        cursor.execute('SELECT prioridade_item FROM prioridade WHERE nome_item=?', (nomeItem,))
+        cursor.execute('SELECT prioridade_item FROM prioridade WHERE nome_item=? AND email=?', (nomeItem, email))
         row = cursor.fetchone()
         if row:
             cursor.execute('UPDATE prioridade SET prioridade_item=? WHERE email=? AND nome_item=?',(prioridade, email, nomeItem))
@@ -149,7 +149,7 @@ def verificarPrioridade():
             linhaItens = cursor.fetchall()
             nomeItem = [linha[0] for linha in linhaItens]
             prioridadeItem = [linha[1] for linha in linhaItens]
-            return jsonify({'message':'Prioridade atualizada com sucesso', 'error':'', 'nomes': nomeItem, 'prioridades': prioridadeItem})
+            return jsonify({'message':'Prioridade atualizada com sucesso!', 'error':'', 'nomes': nomeItem, 'prioridades': prioridadeItem})
         else:
             cursor.execute('SELECT id FROM users WHERE email=?',(email,))
             id = cursor.fetchone()
@@ -160,11 +160,27 @@ def verificarPrioridade():
             linhaItens = cursor.fetchall()
             nomeItem = [linha[0] for linha in linhaItens]
             prioridadeItem = [linha[1] for linha in linhaItens]
-            return jsonify({'message':'Item adicionado!', 'error':'','nomes': nomeItem, 'prioridades': prioridadeItem})
+            return jsonify({'message':'Item adicionado com sucesso!', 'error':'','nomes': nomeItem, 'prioridades': prioridadeItem})
     except Exception as e:
         print(f"Erro:{e}")    
         return jsonify({'message': '', 'error': f'Erro ao executar a ação: {e}'})
     
+@app.route('/excluir', methods=['POST'])
+def excluir_itens():
+    try:
+        data = request.get_json()
+        email = data.get('usuario')
+        item = data.get('itemDiminuitivo')
+        cursor.execute('DELETE FROM prioridade WHERE email=? AND nome_item=?',(email,item))
+        conn.commit()
+        cursor.execute('SELECT nome_item, prioridade_item FROM prioridade WHERE email=?',(email,))
+        linhaItens = cursor.fetchall()
+        nomeItem = [linha[0] for linha in linhaItens]
+        prioridadeItem = [linha[1] for linha in linhaItens]
+        return jsonify({'message':'Item excluido com sucesso!', 'error': '', 'nomes': nomeItem, 'prioridades': prioridadeItem})
+    except Exception as e:
+        print(f'Erro: {e}')
+        return jsonify({'message':'', 'error': 'Erro ao excluir item'})
 
 
 
