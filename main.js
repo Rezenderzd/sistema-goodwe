@@ -41,8 +41,8 @@ let dataInicio
 let dataFinal
 let consumoItensTotal  = []
 
-let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
-let linkIpTasmota  = `http://${ipTasmota}`
+let ipTasmota  //lógica do ip (se contém 1, ele existe algo do tipo)
+let linkIpTasmota  = `http://${'192.168.15.53'}`
 
 
 botaoLoginPagina.addEventListener("click", ()=>{
