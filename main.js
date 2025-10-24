@@ -4,8 +4,6 @@ import ativandoBotaoGrafico from "./botoesGraficos.js"
 import gerandoTodosGraficos from "./gerandoGraficos.js"
 import funcoesLogin from "./login.js"
 
-//Pegar o nome da cidade e  transforma-lo em compativel para a url
-
 const botao = document.querySelector("#botao-cidade")
 const listaAtual = document.querySelector("#lista-recomendacao")
 const mensagemAviso = document.querySelector("#sem-recomendacao")
@@ -39,6 +37,9 @@ const avisoPrioridade = document.querySelector("#aviso-prioridade")
 const tabelaPrioridade = document.querySelector(".tabela-prioridade")
 const botaoAbaPrioridade = document.querySelector("#btn-info-item")
 const offcanvasPrioridade = document.querySelector("#offcanvasBottom")
+let dataInicio
+let dataFinal
+let consumoItensTotal  = []
 
 let ipTasmota //lógica do ip (se contém 1, ele existe algo do tipo)
 let linkIpTasmota  = `http://${ipTasmota}`
@@ -101,13 +102,13 @@ botao.addEventListener("click", async (evento)=>{
 
 botaoEconomia.addEventListener("click", async()=>{
         if(logado){
-                // try{
-                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
-                //         .then(response=> response.json())
-                //         .then(data=>console.log(data))
-                // }catch(error){
-                //         alert(`Erro ao ativar o modo${error}`)
-                //}
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))
+                }catch(error){
+                        alert(`Erro ao ativar o modo${error}`)
+                }
                 try{
                         const email = usuarioLogado
                         const acao = 'ligado'
@@ -122,6 +123,7 @@ botaoEconomia.addEventListener("click", async()=>{
                         let mensagemAtivadoSucesso = data.message
                         if(mensagemAtivadoErro===''){
                                 alert(mensagemAtivadoSucesso)
+                                dataInicio = new Date()
                         }else{
                                 alert(mensagemAtivadoErro)
                         } 
@@ -136,13 +138,13 @@ botaoEconomia.addEventListener("click", async()=>{
 
 botaoDesativar.addEventListener("click", async()=>{
         if(logado){
-                // try{
-                //         fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
-                //         .then(response=> response.json())
-                //         .then(data=>console.log(data))        
-                // }catch(error){
-                //         alert(`Erro  ao desativar o modo${error}`)
-                // }
+                try{
+                        fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                        .then(response=> response.json())
+                        .then(data=>console.log(data))        
+                }catch(error){
+                        alert(`Erro  ao desativar o modo${error}`)
+                }
                 try{
                         const email = usuarioLogado
                         const acao = 'desligado'
@@ -156,7 +158,21 @@ botaoDesativar.addEventListener("click", async()=>{
                         let mensagemDesativadoErro = data.error
                         let mensagemDesativadoSucesso = data.message
                         if(mensagemDesativadoErro===''){
-                                alert(mensagemDesativadoSucesso)
+                                dataFinal = new Date()
+                                console.log(dataInicio)
+                                console.log(dataFinal)
+                                let tempoDesligado = (dataFinal - dataInicio)/1000
+                                console.log(tempoDesligado)
+                                let somaItens = 0
+                                console.log("consumoItensTotal:", consumoItensTotal)
+                                console.log("tamanho:", consumoItensTotal.length)
+                                for (let i = 0;i<consumoItensTotal.length;i++){
+                                        somaItens+=consumoItensTotal[i]
+                                }
+                                console.log(somaItens)
+                                let economiaTotal = tempoDesligado * somaItens
+                                let formatacaoKw = economiaTotal/3.6e6
+                                alert(`${mensagemDesativadoSucesso}.Nesse tempo, foi economizado ${formatacaoKw.toFixed(2)} kwh`)
                         }else{
                                 alert(mensagemDesativadoErro)
                         }
@@ -173,7 +189,7 @@ document.addEventListener("click", async (evento) => {
         if (evento.target.matches("button[value='recomendacao']") && evento.target.classList.contains("btn-danger")) {
                 if(logado){
                         try{
-                                fetch(`${linkIpTasmota}/cm?cmnd=Power%20On`)
+                                fetch(`${linkIpTasmota}/cm?cmnd=Power%20Off`)
                                 .then(response=> response.json())
                                 .then(data=>console.log(data))
                                 apiFuncoes.limparLista()
@@ -371,6 +387,23 @@ botaoLogar.addEventListener("click",async function efetuarLogin(){
                                 const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasLogin) || new bootstrap.Offcanvas(offcanvasLogin)
                                 offcanvas.hide()
                                 usuarioLogado = emailLogin
+                                let email = usuarioLogado
+                                const response = await fetch('http://127.0.0.1:5003/listaItens', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({email})
+                                })
+                                const data = await response.json()
+                                let listaConsumo = data.nomes
+                                const dadosConsumo = await fetch('http://127.0.0.1:5003/consumoItens', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({listaConsumo})
+                                })
+                                const dados = await dadosConsumo.json()
+                                for(let i=0; i<dados.listaConsumo.length;i++){
+                                        consumoItensTotal.push(Number(dados.listaConsumo[i]))
+                                }
                         }else{
                                 avisoLogin.textContent=mensagemErro
                                 logado = false
@@ -419,6 +452,9 @@ botaoConfirmarPrioridade.addEventListener("click",async ()=>{
                                         prioridade: data.prioridades[i],
                                         consumo: dados.listaConsumo[i]
                                 }))
+                                for(let i=0; i<dados.listaConsumo.length;i++){
+                                        consumoItensTotal.push(Number(dados.listaConsumo[i]))
+                                }
                                 listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
                                 if(listaCombinada.length===0){
                                         avisoPrioridade.textContent = 'Nenhum item cadastrado no momento'
@@ -542,6 +578,9 @@ offcanvasPrioridade.addEventListener("click",async (e)=>{
                                 prioridade: data.prioridades[i],
                                 consumo: dados.listaConsumo[i]
                         }))
+                        for(let i=0; i<dados.listaConsumo.length;i++){
+                                consumoItensTotal.push(Number(dados.listaConsumo[i]))
+                        }
                         listaCombinada.sort((a, b) => Number(a.prioridade) - Number(b.prioridade))
                         if(listaCombinada.length===0){
                                 avisoPrioridade.textContent = 'Nenhum item cadastrado no momento'
