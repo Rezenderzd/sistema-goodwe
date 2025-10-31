@@ -172,7 +172,7 @@ botaoDesativar.addEventListener("click", async()=>{
                                 console.log(somaItens)
                                 let economiaTotal = tempoDesligado * somaItens
                                 let formatacaoKw = economiaTotal/3.6e6
-                                alert(`${mensagemDesativadoSucesso}.Nesse tempo, foi economizado ${formatacaoKw.toFixed(2)} kwh`)
+                                alert(`${mensagemDesativadoSucesso}. Nesse tempo, foi economizado ${formatacaoKw.toFixed(2)} kwh`)
                         }else{
                                 alert(mensagemDesativadoErro)
                         }
@@ -282,17 +282,17 @@ botaoRecomendacaoIa.addEventListener("click", async ()=>{
                         })
                         campoRecomendacaoIa.textContent='Analisando dados'
                         const respostaIa = await resposta.json()
-                        let usuario = usuarioLogado
-                        const machineLearning = await  fetch ("http://127.0.0.1:5005/machineLearning",{
-                                method: 'POST',
-                                headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
-                                body: JSON.stringify({usuario}) //transforma a pergunta em um JSON
-                        })
-                        const analiseMachine = await machineLearning.json()
+                        // let usuario = usuarioLogado
+                        // const machineLearning = await  fetch ("http://127.0.0.1:5005/machineLearning",{
+                        //         method: 'POST',
+                        //         headers: {'Content-Type': 'application/json'}, //diz que o que está sendo enviado é um JSON
+                        //         body: JSON.stringify({usuario}) //transforma a pergunta em um JSON
+                        // })
+                        // const analiseMachine = await machineLearning.json()
                         loadingRecomendacao.style.display = 'none'
                         campoRecomendacaoIa.textContent=''
                         campoRecomendacaoIa.textContent = respostaIa.resposta
-                        campoRecomendacaoIa.innerHTML+=`<br><br><p>${analiseMachine.resposta}</p>`
+                        // campoRecomendacaoIa.innerHTML+=`<br><br><p>${analiseMachine.resposta}</p>`
                         
                 }catch(error){
                         loadingRecomendacao.style.display = 'none'
